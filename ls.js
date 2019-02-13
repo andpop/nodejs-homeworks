@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-getAllFiles(__dirname);
-
 function getAllFiles (folderName) {
   fs.readdir(folderName, (err, files) => {
     if (err) {
@@ -22,3 +20,5 @@ function getAllFiles (folderName) {
     }
   });
 }
+
+getAllFiles(__dirname);
