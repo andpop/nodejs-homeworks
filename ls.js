@@ -1,10 +1,24 @@
 const fs = require('fs');
 
-fs.readdir(__dirname, (err, files) => {
-  if (err) {
-    console.log('Ошибка чтения каталога');
-  }
-  files.forEach((item) => {
-    console.log(item);
+getAllFiles(__dirname);
+
+function getAllFiles (folderName) {
+  fs.readdir(folderName, (err, files) => {
+    if (err) {
+      console.log('Ошибка чтения каталога');
+      throw err;
+    }
+
+    for (let file of files) {
+      fs.stat(folderName + '/' + file, (err, stats) => {
+        if (err) throw err;
+
+        if (!stats.isDirectory()) {
+          console.log(file);
+        } else {
+          getAllFiles(folderName + '/' + file);
+        }
+      });
+    }
   });
-});
+}
