@@ -3,7 +3,7 @@ const fs = require('fs');
 function getAllFiles (folderName) {
   fs.readdir(folderName, (err, files) => {
     if (err) {
-      console.log('Ошибка чтения каталога');
+      console.error('Ошибка чтения каталога');
       throw err;
     }
 
