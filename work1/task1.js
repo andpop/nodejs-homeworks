@@ -46,15 +46,15 @@ function makeOutputFolder (folder) {
   }
 }
 
-function getOutFolderForFile (filename) {
+function getOutFolderForFile (filename, toFolder) {
   let folderName = filename.charAt(0).toUpperCase();
-  return path.join(folders.output, folderName);
+  return path.join(toFolder, folderName);
 }
 
-function copyFile (fullFilename) {
+function copyFile (fullFilename, toFolder) {
   let outFolder, outputFileName;
   let file = path.basename(fullFilename);
-  outFolder = getOutFolderForFile(file);
+  outFolder = getOutFolderForFile(file, toFolder);
   outputFileName = path.join(outFolder, file);
   if (!fs.existsSync(outFolder)) {
     try {
@@ -64,35 +64,41 @@ function copyFile (fullFilename) {
       throw err;
     }
   }
-  fs.copyFileSync(fullFilename, outputFileName);
-
-  console.log(`${fullFilename} -> ${outputFileName}`);
+  fs.copyFile(fullFilename, outputFileName, (err) => {
+    if (err) {
+      console.error(err);
+      throw err;
+    }
+    console.log(`${fullFilename} -> ${outputFileName}`);
+  });
 }
 
-function getAllFiles (folderName) {
-  fs.readdir(folderName, (err, files) => {
+function copyAllFiles (fromFolder, toFolder) {
+  fs.readdir(fromFolder, (err, files) => {
     if (err) {
-      console.error(`Input folder (${folders.input}) read error.`);
+      console.error(`Input folder (${fromFolder}) read error.`);
       throw err;
     }
 
     for (let file of files) {
-      let fullName = path.join(folderName, file);
+      let fullName = path.join(fromFolder, file);
       fs.stat(fullName, (err, stats) => {
         if (err) throw err;
 
         if (!stats.isDirectory()) {
-          copyFile(fullName);
+          copyFile(fullName, toFolder);
         } else {
-          getAllFiles(fullName);
+          copyAllFiles(fullName, toFolder);
         }
       });
     }
   });
 }
 
+// =======================================================================================
 parseArguments();
 checkInputFolder(folders.input);
 makeOutputFolder(folders.output);
 console.log(`Copying files: ${folders.input} => ${folders.output}`);
-getAllFiles(folders.input);
+console.log('---------------------------------------------------------------------------');
+copyAllFiles(folders.input, folders.output);
