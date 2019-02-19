@@ -2,15 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 const Events = require('events');
-const folders = {
-  input: '',
-  output: ''
-};
 
 const NO_INPUT_FOLDER_ARGUMENT = 1;
 const NO_OUTPUT_FOLDER_ARGUMENT = 2;
 const NO_INPUT_FOLDER = 3;
 const OUTPUT_FOLDER_CREATE_ERROR = 4;
+
+const folders = {
+  input: '',
+  output: ''
+};
 
 let isDeleteInputFolder = false;
 
@@ -62,6 +63,7 @@ function getOutFolderForFile (filename, toFolder) {
 function copyFile (fullFilename, toFolder) {
   let outFolder, outputFileName;
   let file = path.basename(fullFilename);
+
   outFolder = getOutFolderForFile(file, toFolder);
   outputFileName = path.join(outFolder, file);
   if (!fs.existsSync(outFolder)) {
@@ -78,7 +80,9 @@ function copyFile (fullFilename, toFolder) {
       throw err;
     }
     console.log(`${fullFilename} -> ${outputFileName}`);
+
     numberFileToCopy--; // Файл скопирован - уменьшаем счетчик
+
     if (numberFileToCopy < 1) {
       eventEmitter.emit('last_file_is_copied');
     }
@@ -121,9 +125,12 @@ eventEmitter.on('last_file_is_copied', () => {
 parseArguments();
 checkInputFolder(folders.input);
 makeOutputFolder(folders.output);
+
 console.log(`Copying files: ${folders.input} => ${folders.output}`);
 console.log('---------------------------------------------------------------------------');
+
 let numberFileToCopy = 0; // Количество файлов, которые еще не скопированы
+
 try {
   copyAllFiles(folders.input, folders.output);
 } catch (err) {
