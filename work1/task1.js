@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const rimraf = require('rimraf');
+const Events = require('events');
 const folders = {
   input: '',
   output: ''
@@ -10,11 +12,14 @@ const NO_OUTPUT_FOLDER_ARGUMENT = 2;
 const NO_INPUT_FOLDER = 3;
 const OUTPUT_FOLDER_CREATE_ERROR = 4;
 
+let isDeleteInputFolder = false;
+
 function parseArguments () {
   const program = require('commander');
   program
     .option('-i --input-folder <input-folder>', 'Input folder path')
     .option('-o --output-folder <output-folder>', 'Output folder path')
+    .option('-d --delete-input-folder', 'Delete input folder after copying files')
     .parse(process.argv);
   if (!program.inputFolder) {
     console.log('Please set input folder: \n -i folderName or \n --inputFolder=folderName');
@@ -23,6 +28,9 @@ function parseArguments () {
   if (!program.outputFolder) {
     console.log('Please set output folder: \n -o folderName or \n --outputFolder=folderName');
     process.exit(NO_OUTPUT_FOLDER_ARGUMENT);
+  }
+  if (program.deleteInputFolder) {
+    isDeleteInputFolder = true;
   }
   folders.input = program.inputFolder;
   folders.output = program.outputFolder;
@@ -70,6 +78,10 @@ function copyFile (fullFilename, toFolder) {
       throw err;
     }
     console.log(`${fullFilename} -> ${outputFileName}`);
+    numberFileToCopy--; // Файл скопирован - уменьшаем счетчик
+    if (numberFileToCopy < 1) {
+      eventEmitter.emit('last_file_is_copied');
+    }
   });
 }
 
@@ -86,6 +98,7 @@ function copyAllFiles (fromFolder, toFolder) {
         if (err) throw err;
 
         if (!stats.isDirectory()) {
+          numberFileToCopy++; // Найден еще один файл для копирования - увеличиваем счетчик
           copyFile(fullName, toFolder);
         } else {
           copyAllFiles(fullName, toFolder);
@@ -95,10 +108,24 @@ function copyAllFiles (fromFolder, toFolder) {
   });
 }
 
+const eventEmitter = new Events();
+eventEmitter.on('last_file_is_copied', () => {
+  if (isDeleteInputFolder) {
+    rimraf(folders.input, (err) => {
+      if (err) throw err;
+    });
+  }
+});
+
 // =======================================================================================
 parseArguments();
 checkInputFolder(folders.input);
 makeOutputFolder(folders.output);
 console.log(`Copying files: ${folders.input} => ${folders.output}`);
 console.log('---------------------------------------------------------------------------');
-copyAllFiles(folders.input, folders.output);
+let numberFileToCopy = 0; // Количество файлов, которые еще не скопированы
+try {
+  copyAllFiles(folders.input, folders.output);
+} catch (err) {
+  console.error('Error: ', err);
+}
