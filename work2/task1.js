@@ -1,12 +1,14 @@
 const http = require('http');
 require('dotenv').config();
 
-let intervalTime = process.env.INTERVAL_TIME;
-let stopIntervalTime = process.env.STOP_INTERVAL_TIME;
+const INTERVAL_TIME_DEFAULT = 1000;
+const STOP_INTERVAL_TIME_DEFAULT = 4000;
+const PORT_NUMBER = 8080;
+
+let intervalTime = process.env.INTERVAL_TIME || INTERVAL_TIME_DEFAULT;
+let stopIntervalTime = process.env.STOP_INTERVAL_TIME || STOP_INTERVAL_TIME_DEFAULT;
 
 http.createServer((req, res) => {
-  console.log('Server is running...');
-
   let timer = setInterval(() => {
     console.log(Date());
   }, intervalTime);
@@ -15,4 +17,4 @@ http.createServer((req, res) => {
     clearInterval(timer);
     res.end(Date());
   }, stopIntervalTime);
-}).listen(8081);
+}).listen(PORT_NUMBER);
