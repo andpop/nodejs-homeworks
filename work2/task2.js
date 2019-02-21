@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 const Events = require('events');
+const util = require('util');
 
 const NO_INPUT_FOLDER_ARGUMENT = 1;
 const NO_OUTPUT_FOLDER_ARGUMENT = 2;
@@ -98,16 +99,21 @@ function copyAllFiles (fromFolder, toFolder) {
 
     for (let file of files) {
       let fullName = path.join(fromFolder, file);
-      fs.stat(fullName, (err, stats) => {
-        if (err) throw err;
 
-        if (!stats.isDirectory()) {
-          numberFileToCopy++; // Найден еще один файл для копирования - увеличиваем счетчик
-          copyFile(fullName, toFolder);
-        } else {
-          copyAllFiles(fullName, toFolder);
-        }
-      });
+      const stat = util.promisify(fs.stat);
+
+      stat(fullName)
+        .then(stats => {
+          if (!stats.isDirectory()) {
+            numberFileToCopy++; // Найден еще один файл для копирования - увеличиваем счетчик
+            copyFile(fullName, toFolder);
+          } else {
+            copyAllFiles(fullName, toFolder);
+          }
+        })
+        .catch(err => {
+          throw err;
+        });
     }
   });
 }
