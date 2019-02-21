@@ -14,6 +14,10 @@ const folders = {
   output: ''
 };
 
+const copyFilePromise = util.promisify(fs.copyFile);
+const readdirPromise = util.promisify(fs.readdir);
+const statPromise = util.promisify(fs.stat);
+
 let isDeleteInputFolder = false;
 
 function parseArguments () {
@@ -76,9 +80,7 @@ function copyFile (fullFilename, toFolder) {
     }
   }
 
-  const copyFile = util.promisify(fs.copyFile);
-
-  copyFile(fullFilename, outputFileName)
+  copyFilePromise(fullFilename, outputFileName)
     .then(() => {
       console.log(`${fullFilename} -> ${outputFileName}`);
 
@@ -95,31 +97,29 @@ function copyFile (fullFilename, toFolder) {
 }
 
 function copyAllFiles (fromFolder, toFolder) {
-  fs.readdir(fromFolder, (err, files) => {
-    if (err) {
+  readdirPromise(fromFolder)
+    .then(files => {
+      for (let file of files) {
+        let fullName = path.join(fromFolder, file);
+
+        statPromise(fullName)
+          .then(stats => {
+            if (!stats.isDirectory()) {
+              numberFileToCopy++; // Найден еще один файл для копирования - увеличиваем счетчик
+              copyFile(fullName, toFolder);
+            } else {
+              copyAllFiles(fullName, toFolder);
+            }
+          })
+          .catch(err => {
+            throw err;
+          });
+      }
+    })
+    .catch(err => {
       console.error(`Input folder (${fromFolder}) read error.`);
       throw err;
-    }
-
-    for (let file of files) {
-      let fullName = path.join(fromFolder, file);
-
-      const stat = util.promisify(fs.stat);
-
-      stat(fullName)
-        .then(stats => {
-          if (!stats.isDirectory()) {
-            numberFileToCopy++; // Найден еще один файл для копирования - увеличиваем счетчик
-            copyFile(fullName, toFolder);
-          } else {
-            copyAllFiles(fullName, toFolder);
-          }
-        })
-        .catch(err => {
-          throw err;
-        });
-    }
-  });
+    });
 }
 
 const eventEmitter = new Events();
