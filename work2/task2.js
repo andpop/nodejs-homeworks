@@ -75,19 +75,23 @@ function copyFile (fullFilename, toFolder) {
       throw err;
     }
   }
-  fs.copyFile(fullFilename, outputFileName, (err) => {
-    if (err) {
+
+  const copyFile = util.promisify(fs.copyFile);
+
+  copyFile(fullFilename, outputFileName)
+    .then(() => {
+      console.log(`${fullFilename} -> ${outputFileName}`);
+
+      numberFileToCopy--; // Файл скопирован - уменьшаем счетчик
+
+      if (numberFileToCopy < 1) {
+        eventEmitter.emit('last_file_is_copied');
+      }
+    })
+    .catch(err => {
       console.error(err);
       throw err;
-    }
-    console.log(`${fullFilename} -> ${outputFileName}`);
-
-    numberFileToCopy--; // Файл скопирован - уменьшаем счетчик
-
-    if (numberFileToCopy < 1) {
-      eventEmitter.emit('last_file_is_copied');
-    }
-  });
+    });
 }
 
 function copyAllFiles (fromFolder, toFolder) {
