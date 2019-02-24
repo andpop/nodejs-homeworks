@@ -31,10 +31,6 @@ app.use(function (err, req, res, next) {
   res.end('Error: ', { message: err.message, error: err });
 });
 
-// app.get('/', function (req, res) {
-//   res.send('Hello World! Yeaaaaa!!!');
-// });
-
 app.listen(PORT, function () {
   console.log(`Example app listening on port ${PORT}!`);
 });
