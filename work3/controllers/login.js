@@ -4,4 +4,6 @@ module.exports.get = function (req, res) {
 
 module.exports.post = function (req, res) {
   console.log('POST /login');
+  console.log(req.body.email, req.body.password);
+  // res.send(req.body.email + ' ' + req.body.password);
 };
