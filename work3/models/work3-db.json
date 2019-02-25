@@ -1,15 +1,25 @@
 {
   "skills": {
-    "age": 50,
-    "concerts": 60,
-    "cities": 40,
-    "years": 30
+    "age": 57,
+    "concerts": 47,
+    "cities": 37,
+    "years": 27
   },
   "goods": [
     {
       "photo": "x.png",
       "name": "уауауауауа",
       "price": 12345
+    },
+    {
+      "photo": "plus.png",
+      "name": "Водка",
+      "price": 340
+    },
+    {
+      "photo": "close.png",
+      "name": "Ром",
+      "price": 3400
     }
   ]
 }
