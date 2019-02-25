@@ -1,5 +1,6 @@
 const db = require('./db');
 
+// Сохраняет в БД значения счетчиков из админки
 module.exports.setSkills = function (skillsObj) {
   db
     .set('skills.age', skillsObj.age)
@@ -9,6 +10,7 @@ module.exports.setSkills = function (skillsObj) {
     .write();
 };
 
+// Возвращает объект для передачи в рендеринг главной страницы
 module.exports.getSkills = function () {
   const defaultSkills = {
     'age': 12,
@@ -17,6 +19,7 @@ module.exports.getSkills = function () {
     'years': 20
   };
   const skills = db.get('skills').value() || defaultSkills;
+
   return {
     mySkills: [
       {
