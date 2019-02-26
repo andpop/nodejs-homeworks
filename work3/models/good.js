@@ -5,7 +5,7 @@ const path = require('path');
 const db = require('./db');
 
 // Добавляет в БД новый товар из админки
-module.exports.addGood = function (goodObj) {
+function saveGoodToDB (goodObj) {
   if (!db.has('goods').value()) {
     db.set('goods', []).write();
   }
@@ -17,9 +17,10 @@ module.exports.addGood = function (goodObj) {
       price: goodObj.price
     })
     .write();
-};
+}
 
-module.exports.addGoodNew = function (req, res, next) {
+// Добавляет в БД новый товар из админки и загружает файл с картинкой в public/upload
+module.exports.addGood = function (req, res, next) {
   const form = new formidable.IncomingForm();
   const uploadDir = path.join('./public', 'upload');
 
@@ -33,10 +34,13 @@ module.exports.addGoodNew = function (req, res, next) {
       return next(err);
     }
 
-    console.log(fields.name, fields.price, files.photo.name);
+    saveGoodToDB({
+      photo: files.photo.name,
+      name: fields.name,
+      price: +fields.price
+    });
 
     const fileName = path.join(uploadDir, files.photo.name);
-    console.log(fileName);
 
     fs.rename(files.photo.path, fileName, function (err) {
       if (err) {

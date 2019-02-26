@@ -6,6 +6,7 @@ const adapter = new FileSync(path.join(__dirname, 'work3-db.json'));
 const db = low(adapter);
 
 // Пробовал инициализировать пустой файл - получилось, но запись в него шла постоянно, nodemon перегражался постоянно
-// db.defaults({ goods: [], skills: {} }).write();
+// Получилось так: nodemon --ignore models/work3-db.json app.js
+db.defaults({ goods: [], skills: {} }).write();
 
 module.exports = db;

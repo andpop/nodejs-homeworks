@@ -15,10 +15,5 @@ module.exports.skills = function (req, res) {
 };
 
 module.exports.upload = function (req, res, next) {
-  good.addGoodNew(req, res, next);
-  // good.addGood({
-  //   photo: req.body.photo,
-  //   name: req.body.name,
-  //   price: +req.body.price
-  // });
+  good.addGood(req, res, next);
 };

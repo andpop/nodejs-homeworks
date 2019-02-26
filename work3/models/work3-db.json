@@ -7,19 +7,19 @@
   },
   "goods": [
     {
-      "photo": "x.png",
-      "name": "уауауауауа",
+      "photo": "Work2.jpg",
+      "name": "Бутылка",
+      "price": 250
+    },
+    {
+      "photo": "Work1.jpg",
+      "name": "Часы",
       "price": 12345
     },
     {
-      "photo": "plus.png",
-      "name": "Водка",
-      "price": 340
-    },
-    {
-      "photo": "close.png",
-      "name": "Ром",
-      "price": 3400
+      "photo": "Work3.jpg",
+      "name": "Очки",
+      "price": 800
     }
   ]
 }
