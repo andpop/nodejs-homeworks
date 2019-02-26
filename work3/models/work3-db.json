@@ -20,6 +20,11 @@
       "photo": "Work3.jpg",
       "name": "Очки",
       "price": 800
+    },
+    {
+      "photo": "Work9.jpg",
+      "name": "Рюкзак",
+      "price": 1500
     }
   ]
 }
