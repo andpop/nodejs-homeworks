@@ -1,7 +1,13 @@
 const skill = require('../models/skill');
+const products = require('../models/product');
 
 module.exports.get = function (req, res) {
-  res.render('pages/index', skill.getSkills());
+  const renderVars = {
+    mySkills: skill.getSkills(),
+    myProducts: products.getProducts()
+  };
+
+  res.render('pages/index', renderVars);
 };
 
 module.exports.post = function (req, res) {

@@ -19,25 +19,22 @@ module.exports.getSkills = function () {
     'years': 20
   };
   const skills = db.get('skills').value() || defaultSkills;
-
-  return {
-    mySkills: [
-      {
-        'number': skills.age,
-        'text': 'Возраст начала занятий на скрипке'
-      },
-      {
-        'number': skills.concerts,
-        'text': 'Концертов отыграл'
-      },
-      {
-        'number': skills.cities,
-        'text': 'Максимальное число городов в туре'
-      },
-      {
-        'number': skills.years,
-        'text': 'Лет на сцене в качестве скрипача'
-      }
-    ]
-  };
+  return [
+    {
+      'number': skills.age,
+      'text': 'Возраст начала занятий на скрипке'
+    },
+    {
+      'number': skills.concerts,
+      'text': 'Концертов отыграл'
+    },
+    {
+      'number': skills.cities,
+      'text': 'Максимальное число городов в туре'
+    },
+    {
+      'number': skills.years,
+      'text': 'Лет на сцене в качестве скрипача'
+    }
+  ];
 };

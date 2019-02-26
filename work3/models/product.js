@@ -6,12 +6,12 @@ const db = require('./db');
 
 // Добавляет в БД новый товар из админки
 function saveProductToDB (goodObj) {
-  if (!db.has('goods').value()) {
-    db.set('goods', []).write();
+  if (!db.has('products').value()) {
+    db.set('products', []).write();
   }
 
   db
-    .get('goods').push({
+    .get('products').push({
       photo: goodObj.photo,
       name: goodObj.name,
       price: goodObj.price
@@ -48,4 +48,22 @@ module.exports.addProduct = function (req, res, next) {
       }
     });
   });
+};
+
+// Формирует массив товаров для рендеринга главной страницы
+module.exports.getProducts = function () {
+  // const uploadDir = path.join('/public', 'upload');
+  const products = db.get('products').value() || [];
+  const productsForRender = [];
+
+  for (let product of products) {
+    let itemForRender = {
+      'src': path.join('./upload', product.photo),
+      'name': product.name,
+      'price': product.price
+    };
+    productsForRender.push(itemForRender);
+  }
+  console.log(productsForRender);
+  return productsForRender;
 };
