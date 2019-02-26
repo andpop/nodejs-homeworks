@@ -12,6 +12,7 @@ router.get('/admin', controllerAdmin.get);
 router.post('/admin/skills', controllerAdmin.skills);
 router.post('/admin/upload', controllerAdmin.upload);
 
+router.get('/login.html', controllerLogin.get);
 router.get('/login', controllerLogin.get);
 router.post('/login', controllerLogin.post);
 

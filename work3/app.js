@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -11,6 +13,20 @@ app.set('view engine', 'pug');
 
 // app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: 'klop',
+    key: 'sessionkey',
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      maxAge: 10 * 60 * 1000
+    },
+    saveUninitialized: false,
+    resave: false
+  })
+);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

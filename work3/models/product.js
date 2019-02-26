@@ -64,6 +64,5 @@ module.exports.getProducts = function () {
     };
     productsForRender.push(itemForRender);
   }
-  console.log(productsForRender);
   return productsForRender;
 };
