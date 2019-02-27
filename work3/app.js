@@ -14,19 +14,9 @@ app.set('view engine', 'pug');
 // app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(
-  session({
-    secret: 'klop',
-    key: 'sessionkey',
-    cookie: {
-      path: '/',
-      httpOnly: true,
-      maxAge: 10 * 60 * 1000
-    },
-    saveUninitialized: false,
-    resave: false
-  })
-);
+const config = require('./config');
+
+app.use(session(config.session));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
