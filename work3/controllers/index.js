@@ -1,15 +1,16 @@
-const skill = require('../models/skill');
-const products = require('../models/product');
+const skills = require('../models/skills');
+const products = require('../models/products');
 
-module.exports.get = function (req, res) {
+module.exports.showMainPage = function (req, res) {
   const renderVars = {
-    mySkills: skill.getSkills(),
-    myProducts: products.getProducts()
+    mySkills: skills.get(),
+    myProducts: products.get()
   };
 
   res.render('pages/index', renderVars);
 };
 
+// Непонятно, что здесь нужно делать
 module.exports.post = function (req, res) {
   console.log('POST /index');
   console.log(req.body.name, req.body.email, req.body.message);

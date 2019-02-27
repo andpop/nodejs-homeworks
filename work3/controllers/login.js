@@ -1,8 +1,8 @@
-module.exports.get = function (req, res) {
+module.exports.showLoginForm = function (req, res) {
   res.render('pages/login');
 };
 
-module.exports.post = function (req, res) {
+module.exports.authorization = function (req, res) {
   console.log('POST /login');
   console.log(req.body.email, req.body.password);
 

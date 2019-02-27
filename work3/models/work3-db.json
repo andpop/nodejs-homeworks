@@ -1,9 +1,9 @@
 {
   "skills": {
-    "age": 57,
-    "concerts": 47,
-    "cities": 37,
-    "years": 27
+    "age": 30,
+    "concerts": 20,
+    "cities": 25,
+    "years": 10
   },
   "products": [
     {
@@ -25,6 +25,16 @@
       "photo": "Work9.jpg",
       "name": "Рюкзак",
       "price": 1500
+    },
+    {
+      "photo": "Work7.jpg",
+      "name": "Машинка",
+      "price": 5600
     }
-  ]
+  ],
+  "user": {
+    "login": "admin",
+    "hash": "c772d8cb431293fa39e55f4b253fa02998a3d10c74b5c21ae1fc09853cd916578bdb07f8fb981cd41211c5751b33ae1a59f081cea95fd5b22957dbe30975c2f6b630c317c88b9078da79bd220076036de249af6b222fb933315a9b6f83566907735eeae915cebf109e8e5975d4fe0ae1aa4070f30c8456a7f6c2a76cfe7c49762f2c4857aeaf4dd564712b8c8e5c9ef243673a5810f1da8babd6e470a0c33c53b8774a035c335e98a79211be5c39f25ea70a1d613445b56fe9d461c2cf1a28dd8c5bfaf2196265bd74cd4cdbeffe452ce713d86f3a361e4af9bb15a87a6ffbcba3cd765955717a7d7e25145f667a402d79c6080ddd7d0a4bcc4431a4e49a88627c10ca44613c1d3bc77b988f65d43b115abac4a98b340ad6ac03f5aae584f2780b18ec80974288daab9148de6bfcbaaa582244b575ca05fe5dd8e3428bf61214a1a7e8a0098c4988a64d7c3ba8a60860bb4ebe547da46106feb03fcde124368865778b48866967923f81958661b9c78c75ed836fcde727cec108f989346ed586f1b9301e533a8f6ce8ee83231b677f5ef4c29c463068904856f70d4d070500763c2b5b66eee30ab603061dd06cf6d8ab3ef7fde1d7e3a6bfa9532ba2a3abe9c7ee1a429b8da4088f574c45eeb0f6c7329360ab9db0e14b4bb34b9ffb587a5db458def3b6b99ebfcd7423350fed02d510655e180bb579672a9c6f596cad9a476b",
+    "salt": "ba862f5a274ee00c2d359d999d07639e"
+  }
 }

@@ -1,12 +1,12 @@
-const skill = require('../models/skill');
-const good = require('../models/product');
+const skill = require('../models/skills');
+const product = require('../models/products');
 
-module.exports.get = function (req, res) {
+module.exports.showAdminPanel = function (req, res) {
   res.render('pages/admin');
 };
 
-module.exports.skills = function (req, res) {
-  skill.setSkills({
+module.exports.saveSkills = function (req, res) {
+  skill.set({
     age: +req.body.age,
     concerts: +req.body.concerts,
     cities: +req.body.cities,
@@ -14,6 +14,6 @@ module.exports.skills = function (req, res) {
   });
 };
 
-module.exports.upload = function (req, res, next) {
-  good.addProduct(req, res, next);
+module.exports.saveProduct = function (req, res, next) {
+  product.add(req, res, next);
 };

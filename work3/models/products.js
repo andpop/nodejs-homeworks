@@ -20,7 +20,7 @@ function saveProductToDB (goodObj) {
 }
 
 // Добавляет в БД новый товар из админки и загружает файл с картинкой в public/upload
-module.exports.addProduct = function (req, res, next) {
+module.exports.add = function (req, res, next) {
   const form = new formidable.IncomingForm();
   const uploadDir = path.join('./public', 'upload');
 
@@ -51,8 +51,8 @@ module.exports.addProduct = function (req, res, next) {
 };
 
 // Формирует массив товаров для рендеринга главной страницы
-module.exports.getProducts = function () {
-  // const uploadDir = path.join('/public', 'upload');
+module.exports.get = function () {
+  // const uploadDir = path.join('/public', 'saveProduct');
   const products = db.get('products').value() || [];
   const productsForRender = [];
 

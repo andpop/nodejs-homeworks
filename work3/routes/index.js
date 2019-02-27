@@ -16,15 +16,15 @@ const controllerIndex = require('../controllers/index');
 const controllerAdmin = require('../controllers/admin');
 const controllerLogin = require('../controllers/login');
 
-router.get('/', controllerIndex.get);
-router.post('/', controllerIndex.post);
+router.get('/', controllerIndex.showMainPage);
+router.post('/', controllerIndex.post); // Непонятно, что здесь делать
 
-router.get('/admin', isAdmin, controllerAdmin.get);
-router.post('/admin/skills', controllerAdmin.skills);
-router.post('/admin/upload', controllerAdmin.upload);
+router.get('/admin', isAdmin, controllerAdmin.showAdminPanel);
+router.post('/admin/skills', controllerAdmin.saveSkills);
+router.post('/admin/upload', controllerAdmin.saveProduct);
 
-router.get('/login.html', controllerLogin.get);
-router.get('/login', controllerLogin.get);
-router.post('/login', controllerLogin.post);
+router.get('/login.html', controllerLogin.showLoginForm);
+router.get('/login', controllerLogin.showLoginForm);
+router.post('/login', controllerLogin.authorization);
 
 module.exports = router;
