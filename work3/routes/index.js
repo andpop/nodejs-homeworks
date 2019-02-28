@@ -20,8 +20,8 @@ router.get('/', controllerIndex.showMainPage);
 router.post('/', controllerIndex.post); // Непонятно, что здесь делать
 
 router.get('/admin', isAdmin, controllerAdmin.showAdminPanel);
-router.post('/admin/skills', controllerAdmin.saveSkills);
-router.post('/admin/upload', controllerAdmin.saveProduct);
+router.post('/admin/skills', isAdmin, controllerAdmin.saveSkills);
+router.post('/admin/upload', isAdmin, controllerAdmin.saveProduct);
 
 router.get('/login.html', controllerLogin.showLoginForm);
 router.get('/login', controllerLogin.showLoginForm);

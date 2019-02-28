@@ -1,9 +1,9 @@
 {
   "skills": {
-    "age": 30,
-    "concerts": 20,
-    "cities": 25,
-    "years": 10
+    "age": 37,
+    "concerts": 27,
+    "cities": 28,
+    "years": 13
   },
   "products": [
     {
@@ -30,6 +30,16 @@
       "photo": "Work7.jpg",
       "name": "Машинка",
       "price": 5600
+    },
+    {
+      "photo": "Work6.jpg",
+      "name": "Стакан",
+      "price": 678
+    },
+    {
+      "photo": "Work8.jpg",
+      "name": "Светильник",
+      "price": 5566
     }
   ],
   "user": {

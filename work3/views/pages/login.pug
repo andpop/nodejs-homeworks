@@ -17,11 +17,14 @@ block content
                   i(class=`fab ${item}`)
 
       form(action="/login" method="POST").form-login
-        if (msgslogin)
+        if (msglogin)
           .status= msglogin
         .form-login__line
           label.form-login__label(for="") Привет,
-          input.form-login__input(type="email" name="email" placeholder="E-MAIL")
+          if (email)
+            input.form-login__input(type="email" name="email" placeholder="E-MAIL" value=`${email}`)
+          else
+            input.form-login__input(type="email" name="email" placeholder="E-MAIL")
         .form-login__line
           input.form-login__input(type="password" name="password" placeholder="Пароль")
         .form-login__line
