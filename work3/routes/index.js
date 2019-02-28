@@ -17,7 +17,7 @@ const controllerAdmin = require('../controllers/admin');
 const controllerLogin = require('../controllers/login');
 
 router.get('/', controllerIndex.showMainPage);
-router.post('/', controllerIndex.post); // Непонятно, что здесь делать
+router.post('/', controllerIndex.sendMessage);
 
 router.get('/admin', isAdmin, controllerAdmin.showAdminPanel);
 router.post('/admin/skills', isAdmin, controllerAdmin.saveSkills);
