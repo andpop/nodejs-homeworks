@@ -1,3 +1,5 @@
+// Консольная утилита для ввода учетных данных пользователя, которому будет доступна админка
+// Введенные email и хэш пароля сохраняются в базе данных db.js
 const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
