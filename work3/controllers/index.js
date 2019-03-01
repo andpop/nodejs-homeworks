@@ -25,7 +25,7 @@ module.exports.sendMessage = function (req, res) {
     to: config.mail.smtp.auth.user,
     subject: config.mail.subject,
     text:
-      req.body.text.trim().slice(0, 500) +
+      req.body.message.trim().slice(0, 500) +
       `\n Отправлено с: <${req.body.email}>`
   };
   // отправляем почту
@@ -33,13 +33,10 @@ module.exports.sendMessage = function (req, res) {
     // если есть ошибки при отправке - сообщаем об этом
     if (error) {
       return res.json({
-        msg: `При отправке письма произошла ошибка!: ${error}`,
+        msg: `При отправке сообщения произошла ошибка!: ${error}`,
         status: 'Error'
       });
     }
-    res.json({ msg: 'Письмо успешно отправлено!', status: 'Ok' });
+    res.json({ msg: 'Сообщение успешно отправлено!', status: 'Ok' });
   });
-
-  // console.log('POST /index');
-  // console.log(req.body.name, req.body.email, req.body.message);
 };

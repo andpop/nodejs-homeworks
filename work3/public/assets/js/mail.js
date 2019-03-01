@@ -1,4 +1,4 @@
-function prepareSendMail (e) {
+function sendMail (e) {
   e.preventDefault();
 
   const data = {
@@ -9,15 +9,16 @@ function prepareSendMail (e) {
 
   statusMail.innerHTML = 'Отсылка сообщения...';
   sendJson('/', data, 'POST', data => {
-    if (data.status === 'Error') {
-      statusMail.innerHTML = 'Извините, при отсылке сообщения на сервер произошла ошибка.';
-    } else {
-      statusMail.innerHTML = 'Ваше сообщение отправлено.';
-    }
+    statusMail.innerHTML = data.msg;
+    // if (data.status === 'Error') {
+    //   statusMail.innerHTML = 'Извините, при отсылке сообщения на сервер произошла ошибка.';
+    // } else {
+    //   statusMail.innerHTML = 'Ваше сообщение отправлено.';
+    // }
   });
 }
 
-function sendJson (url, data, method, cb) {
+function sendJson (url, data, method, callback) {
   // eslint-disable-next-line no-undef
   let xhr = new XMLHttpRequest();
   xhr.open(method, url);
@@ -29,13 +30,13 @@ function sendJson (url, data, method, cb) {
       // console.log(result);
     } catch (err) {
       // eslint-disable-next-line standard/no-callback-literal
-      cb({ msg: 'Извините, при отсылке сообщения на сервер произошла ошибка.', status: 'Error' });
+      callback({ msg: 'Извините, при отсылке сообщения на сервер произошла ошибка.', status: 'Error' });
     }
-    cb(result);
+    callback(result);
   };
   xhr.send(JSON.stringify(data));
 }
 
 const formMail = document.querySelector('#mail');
 const statusMail = document.querySelector('#status_mail');
-formMail.addEventListener('submit', prepareSendMail);
+formMail.addEventListener('submit', sendMail);
