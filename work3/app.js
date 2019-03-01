@@ -24,19 +24,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
 
-// catch 404 and forward to error handler
+// Ловим ошибку 404 и переходим в обработчик ошибок
 app.use(function (req, res, next) {
-  const err = new Error('Not Found');
+  const err = new Error('Страница не найдена');
   err.status = 404;
   next(err);
 });
 
-// error handler
+// Обработчик ошибок
 app.use(function (err, req, res, next) {
-  // render the error page
+  // Отображаем сообщение об ошибке
   res.status(err.status || 500);
-  // TODO Добавить header с utf-8, чтобы отображалась кириллица
-  res.end('Error: ', { message: err.message, error: err });
+  res.set({ 'content-type': 'text/html; charset=utf-8' });
+  res.end('Произошла ошибка: ', { message: err.message, error: err });
 });
 
 app.listen(PORT, function () {
