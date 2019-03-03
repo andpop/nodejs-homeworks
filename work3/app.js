@@ -1,9 +1,41 @@
-const express = require('express');
+const Koa = require('koa');
+const app = new Koa();
+const static = require('koa-static');
+const session = require('koa-session');
+const Pug = require('koa-pug');
+const fs = require('fs');
+const pug = new Pug({
+  viewPath: './views',
+  pretty: true,
+  basedir: './views',
+  noCache: true,
+  app: app,
+});
+
+
+// const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
-const session = require('express-session');
+// const bodyParser = require('body-parser');
+// const session = require('express-session');
 const flash = require('connect-flash');
 
+const config = require('./config');
+
+app.use(static('./public'));
+
+const errorHandler = require('./libs/error');
+
+app.use(errorHandler);
+
+app.on('error', (err, ctx) => {
+  ctx.render('error', {
+    status: ctx.response.status,
+    error: ctx.response.message,
+  });
+});
+
+
+//-------------------------------------------------------------
 const PORT = process.env.PORT || 3000;
 
 const app = express();
