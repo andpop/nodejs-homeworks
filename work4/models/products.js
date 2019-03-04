@@ -5,22 +5,22 @@ const path = require('path');
 const db = require('./db');
 
 // Добавляет в БД новый товар из админки
-function saveProductToDB (goodObj) {
+function saveProductToDB (productObj) {
   if (!db.has('products').value()) {
     db.set('products', []).write();
   }
 
   db
     .get('products').push({
-      photo: goodObj.photo,
-      name: goodObj.name,
-      price: goodObj.price
+      photo: productObj.photo,
+      name: productObj.name,
+      price: productObj.price
     })
     .write();
 }
 
 // Добавляет в БД новый товар из админки и загружает файл с картинкой в public/upload
-module.exports.add = function (req, res, next) {
+module.exports.add = function (ctx, next) {
   const form = new formidable.IncomingForm();
   const uploadDir = path.join('./public', 'upload');
 
@@ -29,7 +29,7 @@ module.exports.add = function (req, res, next) {
   }
   form.uploadDir = path.join(process.cwd(), uploadDir);
 
-  form.parse(req, function (err, fields, files) {
+  form.parse(ctx.request, function (err, fields, files) {
     if (err) {
       return next(err);
     }

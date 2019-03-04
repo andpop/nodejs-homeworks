@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const router = new Router();
 const koaBody = require('koa-body');
+const path = require('path');
 
 const isAdmin = (ctx, next) => {
   // если в сессии текущего пользователя есть пометка о том, что он является
@@ -21,11 +22,30 @@ router.get('/', controllerIndex.showMainPage);
 router.post('/', controllerIndex.sendMessage);
 
 router.get('/admin', isAdmin, controllerAdmin.showAdminPanel);
-// router.post('/admin/skills', isAdmin, controllerAdmin.saveSkills);
-// router.post('/admin/upload', isAdmin, controllerAdmin.saveProduct);
+router.post(
+  '/admin/skills',
+  koaBody(),
+  isAdmin,
+  controllerAdmin.saveSkills
+);
+router.post(
+  '/admin/upload',
+  koaBody({
+    multipart: true,
+    formidable: {
+      uploadDir: path.join('./public', 'upload')
+    }
+  }),
+  isAdmin,
+  controllerAdmin.saveProduct
+);
 
 router.get('/login.html', controllerLogin.showLoginForm);
 router.get('/login', controllerLogin.showLoginForm);
-router.post('/login', koaBody(), controllerLogin.authorization);
+router.post(
+  '/login',
+  koaBody(),
+  controllerLogin.authorization
+);
 
 module.exports = router;
