@@ -1,6 +1,7 @@
 const skill = require('../models/skills');
 const product = require('../models/products');
 
+/*
 module.exports.showAdminPanel = function (req, res) {
   const skills = skill.get();
   const renderVars = {
@@ -20,6 +21,28 @@ module.exports.showAdminPanel = function (req, res) {
   }
 
   res.render('pages/admin', renderVars);
+};
+*/
+
+module.exports.showAdminPanel = async function (ctx) {
+  const skills = skill.get();
+  const renderVars = {
+    age: skills[0].number,
+    concerts: skills[1].number,
+    cities: skills[2].number,
+    years: skills[3].number
+  };
+
+  if (ctx.session.msgskill) {
+    renderVars.msgskill = ctx.session.msgskill;
+    ctx.session.msgskill = '';
+  }
+  if (ctx.session.msgfile) {
+    renderVars.msgfile = ctx.session.msgfile;
+    ctx.session.msgfile = '';
+  }
+
+  ctx.render('pages/admin', renderVars);
 };
 
 module.exports.saveSkills = function (req, res) {

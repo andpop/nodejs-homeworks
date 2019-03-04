@@ -3,15 +3,6 @@ const products = require('../models/products');
 const nodemailer = require('nodemailer');
 const config = require('../config');
 
-// module.exports.showMainPage = function (req, res) {
-//   const renderVars = {
-//     mySkills: skills.get(),
-//     myProducts: products.get()
-//   };
-//
-//   res.render('pages/index', renderVars);
-// };
-
 module.exports.showMainPage = async (ctx, next) => {
   const renderVars = {
     mySkills: skills.get(),

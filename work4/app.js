@@ -2,10 +2,9 @@ const Koa = require('koa');
 const app = new Koa();
 const koaStatic = require('koa-static');
 const session = require('koa-session');
-const flash = require('connect-flash');
+// const flash = require('koa-connect-flash');
 const Pug = require('koa-pug');
 const fs = require('fs');
-const path = require('path');
 
 const pug = new Pug({
   viewPath: './views',
@@ -36,7 +35,7 @@ app
   .use(session(config.session, app))
   .use(router.routes())
   .use(router.allowedMethods())
-  .use(flash());
+  // .use(flash());
 
 const PORT = process.env.PORT || 3000;
 
@@ -46,7 +45,6 @@ app.listen(PORT, () => {
   }
   console.log('Server start on port: ', PORT);
 });
-
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
@@ -76,4 +74,3 @@ app.use(function (err, req, res, next) {
   res.end('Произошла ошибка: ', { message: err.message, error: err });
 });
 */
-
