@@ -34,8 +34,7 @@ const router = require('./routes');
 app
   .use(session(config.session, app))
   .use(router.routes())
-  .use(router.allowedMethods())
-  // .use(flash());
+  .use(router.allowedMethods());
 
 const PORT = process.env.PORT || 3000;
 

@@ -1,11 +1,8 @@
-const formidable = require('formidable');
-const fs = require('fs');
 const path = require('path');
-
 const db = require('./db');
 
 // Добавляет в БД новый товар из админки
-function saveProductToDB (productObj) {
+module.exports.saveProductToDB = function (productObj) {
   if (!db.has('products').value()) {
     db.set('products', []).write();
   }
@@ -17,37 +14,6 @@ function saveProductToDB (productObj) {
       price: productObj.price
     })
     .write();
-}
-
-// Добавляет в БД новый товар из админки и загружает файл с картинкой в public/upload
-module.exports.add = function (ctx, next) {
-  const form = new formidable.IncomingForm();
-  const uploadDir = path.join('./public', 'upload');
-
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-  }
-  form.uploadDir = path.join(process.cwd(), uploadDir);
-
-  form.parse(ctx.request, function (err, fields, files) {
-    if (err) {
-      return next(err);
-    }
-
-    saveProductToDB({
-      photo: files.photo.name,
-      name: fields.name,
-      price: +fields.price
-    });
-
-    const fileName = path.join(uploadDir, files.photo.name);
-
-    fs.rename(files.photo.path, fileName, function (err) {
-      if (err) {
-        console.error(err.message);
-      }
-    });
-  });
 };
 
 // Формирует массив товаров для рендеринга главной страницы

@@ -33,7 +33,7 @@ router.post(
   koaBody({
     multipart: true,
     formidable: {
-      uploadDir: path.join('./public', 'upload')
+      uploadDir: path.join(process.cwd(), 'public', 'upload')
     }
   }),
   isAdmin,

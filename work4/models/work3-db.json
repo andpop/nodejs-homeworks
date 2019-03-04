@@ -40,6 +40,16 @@
       "photo": "Work8.jpg",
       "name": "Светильник",
       "price": 5566
+    },
+    {
+      "photo": "screen.png",
+      "name": "Часы с кукушкой",
+      "price": 340
+    },
+    {
+      "photo": "face.png",
+      "name": "Кукла",
+      "price": 5600
     }
   ],
   "user": {
