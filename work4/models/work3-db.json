@@ -1,0 +1,50 @@
+{
+  "skills": {
+    "age": 37,
+    "concerts": 27,
+    "cities": 28,
+    "years": 13
+  },
+  "products": [
+    {
+      "photo": "Work2.jpg",
+      "name": "Бутылка",
+      "price": 250
+    },
+    {
+      "photo": "Work1.jpg",
+      "name": "Часы",
+      "price": 12345
+    },
+    {
+      "photo": "Work3.jpg",
+      "name": "Очки",
+      "price": 800
+    },
+    {
+      "photo": "Work9.jpg",
+      "name": "Рюкзак",
+      "price": 1500
+    },
+    {
+      "photo": "Work7.jpg",
+      "name": "Машинка",
+      "price": 5600
+    },
+    {
+      "photo": "Work6.jpg",
+      "name": "Стакан",
+      "price": 678
+    },
+    {
+      "photo": "Work8.jpg",
+      "name": "Светильник",
+      "price": 5566
+    }
+  ],
+  "user": {
+    "email": "andpop@mail.ru",
+    "hash": "bbdd2c1a2eaca18089ec51b91332f728fd8f4be7e2305af42f949231f5096250139882985077298545446c9ecf911dfc23abe6b96059114bd9ebc7e4bf6e5cc749638b59d268fe01f5c100c4f70e5a4d003ab8807aab0abc84200cb914dca745c9472c852061e711b35eddffde1ea047d16f7482236a923d6a1f010ebbba1a7703e12b9e877304a429745e15811a916a584b84f8d5d922067d7772d39302f565c66145213a784536c44c04886bcd8cbaff8020eacf36231d1e59d1737e1cffb78673e75892a5f7d51e5fbc3f9086ded31df8b68867658d18aaa25e7eea369af71c6a717924cf1e13e3955ee04a7b8b46b0a1d508ee8ef04e09790a6888f907f48dd7ab0edcd74d8f97eb955be5011004d4d5a2fccdf4ffc494aa32079831925c7f627e765ade75d99cfa2f057629e0e3542d7cd5d456913438ce54159f93e7890a83f50a6f7d50c3f0d4cf47dc101bf68546380adcc4465f03bf5086bac634cc8f3dcaa4c11eaf698cce9b5fb6c5c50412b1aa8bdc4b71a36954fafe6cdacebb6bf256f3cfa8ee12b00c3bee265cc1b241c4927dd68b89bf930debe69b53f5f46896c71bf5791f1ad19710e186a90a58967f1707d9f0ba4980e9470baee712a52483d61828ed3808d8a62d4311c87a61dd63ac227e8166bf8fb58e4acf40a30520da6e130ce9f8a0eeb5aa480a38d6d8fc2117ded84d7354ea44e877dfa3b60c",
+    "salt": "4d4f2cf7e6f536a53f26eca8a7b0e31f"
+  }
+}
