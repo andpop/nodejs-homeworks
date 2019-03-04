@@ -10,11 +10,6 @@ function sendMail (e) {
   statusMail.innerHTML = 'Отсылка сообщения...';
   sendJson('/', data, 'POST', data => {
     statusMail.innerHTML = data.msg;
-    // if (data.status === 'Error') {
-    //   statusMail.innerHTML = 'Извините, при отсылке сообщения на сервер произошла ошибка.';
-    // } else {
-    //   statusMail.innerHTML = 'Ваше сообщение отправлено.';
-    // }
   });
 }
 
@@ -28,8 +23,6 @@ function sendJson (url, data, method, callback) {
     console.log(xhr.responseText);
     try {
       result = JSON.parse(xhr.responseText);
-      console.log(xhr.responseText);
-      // console.log(result);
     } catch (err) {
       // eslint-disable-next-line standard/no-callback-literal
       callback({ msg: 'Извините, при отсылке сообщения на сервер произошла ошибка.', status: 'Error' });
