@@ -21,5 +21,6 @@
         "pass": "cdyuhawzBSA5GvQ"
       }
     }
-  }
+  },
+  "upload": "./public/upload"
 }
