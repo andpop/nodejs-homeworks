@@ -18,7 +18,6 @@ module.exports.saveProductToDB = function (productObj) {
 
 // Формирует массив товаров для рендеринга главной страницы
 module.exports.get = function () {
-  // const uploadDir = path.join('/public', 'saveProduct');
   const products = db.get('products').value() || [];
   const productsForRender = [];
 
