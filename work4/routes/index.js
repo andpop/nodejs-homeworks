@@ -19,7 +19,7 @@ const controllerAdmin = require('../controllers/admin');
 const controllerLogin = require('../controllers/login');
 
 router.get('/', controllerIndex.showMainPage);
-router.post('/', controllerIndex.sendMessage);
+router.post('/', koaBody(), controllerIndex.sendMessage);
 
 router.get('/admin', isAdmin, controllerAdmin.showAdminPanel);
 router.post(

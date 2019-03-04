@@ -25,8 +25,10 @@ function sendJson (url, data, method, callback) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function () {
     let result;
+    console.log(xhr.responseText);
     try {
       result = JSON.parse(xhr.responseText);
+      console.log(xhr.responseText);
       // console.log(result);
     } catch (err) {
       // eslint-disable-next-line standard/no-callback-literal

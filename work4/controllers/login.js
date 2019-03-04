@@ -26,21 +26,6 @@ module.exports.showLoginForm = async function (ctx) {
   ctx.render('pages/login', renderVars);
 };
 
-/*
-module.exports.authorization = function (req, res) {
-  const { email, password } = req.body;
-  req.session.email = email;
-
-  if (user.validate(email, password)) {
-    req.session.isAdmin = true;
-    res.redirect('/admin');
-  } else {
-    req.flash('msglogin', 'Неправильный email или пароль');
-    res.redirect('/login');
-  }
-};
-*/
-
 module.exports.authorization = async function (ctx) {
   const { email, password } = ctx.request.body;
   ctx.session.email = email;

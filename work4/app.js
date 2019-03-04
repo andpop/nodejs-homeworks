@@ -2,7 +2,6 @@ const Koa = require('koa');
 const app = new Koa();
 const koaStatic = require('koa-static');
 const session = require('koa-session');
-// const flash = require('koa-connect-flash');
 const Pug = require('koa-pug');
 const fs = require('fs');
 

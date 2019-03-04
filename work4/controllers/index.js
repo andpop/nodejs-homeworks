@@ -2,6 +2,7 @@ const skills = require('../models/skills');
 const products = require('../models/products');
 const nodemailer = require('nodemailer');
 const config = require('../config');
+// const util = require('util');
 
 module.exports.showMainPage = async (ctx, next) => {
   const renderVars = {
@@ -12,31 +13,45 @@ module.exports.showMainPage = async (ctx, next) => {
   ctx.render('pages/index', renderVars);
 };
 
-module.exports.sendMessage = function (req, res) {
-  if (!req.body.name || !req.body.email || !req.body.message) {
+module.exports.sendMessage = async function (ctx) {
+  const { name, email, message } = ctx.request.body;
+  if (!name.trim() || !email.trim() || !message.trim()) {
     // если что-либо не указано - сообщаем об этом
-    return res.json({ msg: 'Все поля нужно заполнить!', status: 'Error' });
+    ctx.body = { msg: 'Все поля нужно заполнить!', status: 'Error' };
   }
 
   // инициализируем модуль для отправки писем и указываем данные из конфига
   const transporter = nodemailer.createTransport(config.mail.smtp);
   const mailOptions = {
-    from: `"${req.body.name}" <${req.body.email}>`,
+    from: `"${name}" <${email}>`,
     to: config.mail.smtp.auth.user,
     subject: config.mail.subject,
     text:
-      req.body.message.trim().slice(0, 500) +
-      `\n Отправлено с: <${req.body.email}>`
+      message.trim().slice(0, 500) +
+      `\n Отправлено с: <${email}>`
   };
-  // отправляем почту
-  transporter.sendMail(mailOptions, function (error, info) {
-    // если есть ошибки при отправке - сообщаем об этом
-    if (error) {
-      return res.json({
-        msg: `При отправке сообщения произошла ошибка!: ${error}`,
-        status: 'Error'
+
+  const sendMail = function (mailOptions) {
+    return new Promise((resolve, reject) => {
+      // отправляем почту
+      transporter.sendMail(mailOptions, function (error, info) {
+        // если есть ошибки при отправке - сообщаем об этом
+        if (error) {
+          reject(error);
+        } else {
+          resolve(info);
+        }
       });
-    }
-    res.json({ msg: 'Сообщение успешно отправлено!', status: 'Ok' });
-  });
+    });
+  };
+
+  try {
+    const info = await sendMail(mailOptions);
+    ctx.body = { msg: 'Сообщение успешно отправлено!', status: 'Ok' };
+  } catch (error) {
+    ctx.body = {
+      msg: `При отправке сообщения произошла ошибка!: ${error}`,
+      status: 'Error'
+    };
+  }
 };
