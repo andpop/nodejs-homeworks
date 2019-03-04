@@ -2,7 +2,6 @@ const skills = require('../models/skills');
 const products = require('../models/products');
 const nodemailer = require('nodemailer');
 const config = require('../config');
-// const util = require('util');
 
 module.exports.showMainPage = async (ctx, next) => {
   const renderVars = {
