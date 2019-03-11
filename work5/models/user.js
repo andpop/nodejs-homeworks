@@ -1,11 +1,14 @@
+// TODO Сделать генерацию id
 function getId () {
   return 331;
 }
 
+// TODO Сделать генерацию токена
 function getAccessToken () {
   return '855c03c0-19f0-4cc2-a444-dc5479f41600';
 }
 
+// TODO Сделать хэширование пароля
 function hashPassword (password) {
   let hash = '$2a$10$qxJ1/xr5UeA2aeL6JMV8veL5Z8kHbJbvP8/3EHJpcAwOhMDZ5zMHi';
   return hash;
