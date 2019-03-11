@@ -1,0 +1,25 @@
+{
+  "session": {
+    "secret": "klop",
+    "key": "sessionkey",
+    "cookie": {
+      "path": "/",
+      "httpOnly": true,
+      "maxAge": 60000
+    },
+    "saveUninitialized": false,
+    "resave": false
+  },
+  "mail": {
+    "subject": "Сообщение с сайта",
+    "smtp": {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "andpop0580@gmail.com",
+        "pass": "cdyuhawzBSA5GvQ"
+      }
+    }
+  }
+}
