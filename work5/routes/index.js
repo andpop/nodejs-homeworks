@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-// const controllerIndex = require('../controllers/index');
-// const controllerAdmin = require('../controllers/admin');
+const api = require('../api/index');
 
-// router.get('/', controllerIndex.showMainPage);
-router.post('/*', (req, res) => {
-  res.send('POST-запрос');
-});
+// router.post('/*', (req, res) => {
+//   res.send('POST-запрос');
+//   console.log(req.body);
+// });
+router.post('/api/saveNewUser', api.saveNewUser);
 
 // router.get('/admin', isAdmin, controllerAdmin.showAdminPanel);
 // router.post('/admin/skills', isAdmin, controllerAdmin.saveSkills);
