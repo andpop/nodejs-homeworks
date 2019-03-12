@@ -1,6 +1,6 @@
 const config = require('../config');
 const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
+// const ObjectID = require('mongodb').ObjectID;
 const mongoClient = new MongoClient(config.dbURL, { useNewUrlParser: true });
 const bcrypt = require('bcryptjs');
 
@@ -76,7 +76,7 @@ module.exports.createUser = function (userRegisterInfo) {
 
       // Увеличиваем счетчик пользователей в коллекции counters
       db.collection('counters').findOneAndUpdate(
-        { _id: "userid" },
+        { _id: 'userid' },
         { $inc: { seq: 1 } },
         { returnOriginal: false },
         (err, userCounter) => {
