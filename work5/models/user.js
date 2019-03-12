@@ -1,7 +1,7 @@
-// TODO Сделать генерацию id
-function getId () {
-  return 331;
-}
+const config = require('../config');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
+const mongoClient = new MongoClient(config.dbURL, { useNewUrlParser: true });
 
 // TODO Сделать генерацию токена
 function getAccessToken () {
@@ -49,19 +49,47 @@ function getPermission (userId) {
   return permissions;
 }
 
-module.exports.createUser = function (userRegisterInfo) {
-  const newUser = {};
-  newUser.id = getId();
-  newUser.access_token = getAccessToken();
-  newUser.password = hashPassword(userRegisterInfo.password);
-  newUser.username = userRegisterInfo.username;
-  newUser.firstName = userRegisterInfo.firstName;
-  newUser.middleName = userRegisterInfo.middleName;
-  newUser.surName = userRegisterInfo.surName;
-  newUser.img = userRegisterInfo.img;
-  newUser.permissionId = newUser.id;
-  newUser.permission = getPermission(newUser.id);
+function createUserObj (userRegisterInfo, userId) {
+  const userObj = {};
+  userObj.id = userId;
+  userObj.access_token = getAccessToken();
+  userObj.password = hashPassword(userRegisterInfo.password);
+  userObj.username = userRegisterInfo.username;
+  userObj.firstName = userRegisterInfo.firstName;
+  userObj.middleName = userRegisterInfo.middleName;
+  userObj.surName = userRegisterInfo.surName;
+  userObj.img = userRegisterInfo.img;
+  userObj.permissionId = userObj.id;
+  userObj.permission = getPermission(userObj.id);
 
-  return newUser;
-  // console.log(newUser);
+  return userObj;
+}
+
+module.exports.createUser = function (userRegisterInfo) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      // Подключаемся к базе данных
+      const db = client.db();
+
+      // Увеличиваем счетчик пользователей в коллекции counters
+      db.collection('counters').findOneAndUpdate(
+        { _id: "userid" },
+        { $inc: { seq: 1 } },
+        { returnOriginal: false },
+        (err, userCounter) => {
+          if (err) {
+            return reject(err);
+          }
+          const userId = userCounter.value.seq;
+          const newUser = createUserObj(userRegisterInfo, userId);
+
+          db.collection('users').insertOne(newUser);
+          client.close();
+          resolve(newUser);
+        });
+    });
+  });
 };
