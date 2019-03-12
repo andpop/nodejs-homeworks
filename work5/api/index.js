@@ -1,4 +1,8 @@
 const user = require('../models/user');
+const config = require('../config');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
+const mongoClient = new MongoClient(config.dbURL, { useNewUrlParser: true });
 
 module.exports.saveNewUser = function (req, res) {
   // TODO Сделать проверку входных данных
@@ -6,9 +10,15 @@ module.exports.saveNewUser = function (req, res) {
 
   const newUser = JSON.parse(req.body);
   const responseUser = user.createUser(newUser);
-  res.json(responseUser);
+  mongoClient.connect(function (err, client) {
+    if (err) {
+      return console.log(err);
+    }
+    // взаимодействие с базой данных
+    const db = client.db();
 
-  // console.log(responseUser);
-  // let responseString = JSON.stringify(responseUser);
-  // res.send(responseString);
+    db.collection('users').insertOne(responseUser);
+    res.json(responseUser);
+    client.close();
+  });
 };
