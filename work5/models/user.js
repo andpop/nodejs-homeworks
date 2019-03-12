@@ -2,16 +2,16 @@ const config = require('../config');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const mongoClient = new MongoClient(config.dbURL, { useNewUrlParser: true });
+const bcrypt = require('bcryptjs');
 
 // TODO Сделать генерацию токена
 function getAccessToken () {
   return '855c03c0-19f0-4cc2-a444-dc5479f41600';
 }
 
-// TODO Сделать хэширование пароля
 function hashPassword (password) {
-  let hash = '$2a$10$qxJ1/xr5UeA2aeL6JMV8veL5Z8kHbJbvP8/3EHJpcAwOhMDZ5zMHi';
-  return hash;
+  // let hash = '$2a$10$qxJ1/xr5UeA2aeL6JMV8veL5Z8kHbJbvP8/3EHJpcAwOhMDZ5zMHi';
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
 
 function getPermission (userId) {
