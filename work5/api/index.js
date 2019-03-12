@@ -6,9 +6,9 @@ module.exports.saveNewUser = function (req, res) {
 
   const newUser = JSON.parse(req.body);
   const responseUser = user.createUser(newUser);
+  res.json(responseUser);
 
   // console.log(responseUser);
-  let responseString = JSON.stringify(responseUser);
-
-  res.send(responseString);
+  // let responseString = JSON.stringify(responseUser);
+  // res.send(responseString);
 };
