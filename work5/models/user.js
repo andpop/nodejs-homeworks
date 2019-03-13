@@ -93,3 +93,23 @@ module.exports.createUser = function (userRegisterInfo) {
     });
   });
 };
+
+module.exports.loadUser = function (username) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      // Подключаемся к базе данных
+      const db = client.db();
+
+      let userObj = db.collection('users').findOne({ 'username': username });
+      client.close();
+      if (userObj) {
+        resolve(userObj);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};

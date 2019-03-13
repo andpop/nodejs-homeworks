@@ -8,5 +8,6 @@ const api = require('../api/index');
 //   console.log(req.body);
 // });
 router.post('/api/saveNewUser', api.saveNewUser);
+router.post('/api/login', api.login);
 
 module.exports = router;
