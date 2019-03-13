@@ -9,5 +9,6 @@ const api = require('../api/index');
 // });
 router.post('/api/saveNewUser', api.saveNewUser);
 router.post('/api/login', api.login);
+router.post('/api/newNews', api.saveNewNews);
 
 module.exports = router;

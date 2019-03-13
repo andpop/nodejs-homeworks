@@ -94,7 +94,7 @@ module.exports.createUser = function (userRegisterInfo) {
   });
 };
 
-module.exports.loadUser = function (username) {
+module.exports.getUserByUsername = function (username) {
   return new Promise((resolve, reject) => {
     mongoClient.connect(function (err, client) {
       if (err) {
@@ -104,6 +104,26 @@ module.exports.loadUser = function (username) {
       const db = client.db();
 
       let userObj = db.collection('users').findOne({ 'username': username });
+      client.close();
+      if (userObj) {
+        resolve(userObj);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};
+
+module.exports.getUserById = function (id) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      // Подключаемся к базе данных
+      const db = client.db();
+
+      let userObj = db.collection('users').findOne({ 'id': id });
       client.close();
       if (userObj) {
         resolve(userObj);
