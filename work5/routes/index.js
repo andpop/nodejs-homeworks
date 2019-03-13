@@ -9,6 +9,12 @@ const api = require('../api/index');
 // });
 router.post('/api/saveNewUser', api.saveNewUser);
 router.post('/api/login', api.login);
+
+router.get('/api/getNews', api.getAllNews);
 router.post('/api/newNews', api.saveNewNews);
+
+router.get('/*', (req, res) => {
+  res.redirect('/index.html');
+});
 
 module.exports = router;

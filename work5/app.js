@@ -7,8 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-// app.use(bodyParser.json());
-
+// Запросы от фронта приходят с Content-type: plain/text
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -19,23 +18,12 @@ app.use(session(config.session));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // На любой get-запрос возвращается index.html
-app.get('/*', function (request, response) {
-  response.redirect('/index.html');
-});
+// app.get('/*', function (request, response) {
+//   response.redirect('/index.html');
+// });
 
 app.use('/', require('./routes/index'));
 
-/*
-app.use('/', require('./routes/index'));
-
-// Ловим ошибку 404 и переходим в обработчик ошибок
-app.use(function (req, res, next) {
-  const err = new Error('Страница не найдена');
-  err.status = 404;
-  next(err);
-});
-
-*/
 // Обработчик ошибок
 app.use(function (err, req, res, next) {
   // Отображаем сообщение об ошибке

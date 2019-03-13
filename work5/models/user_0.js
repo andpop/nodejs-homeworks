@@ -1,6 +1,22 @@
 const config = require('../config');
-const mongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
+// const ObjectID = require('mongodb').ObjectID;
+/*
+const mongoClient = new MongoClient(config.dbURL, {
+  useNewUrlParser: true,
+  reconnectTries: Number.MAX_VALUE,
+  autoReconnect: true
+});
+*/
+const mongoClient = new MongoClient(config.dbURL, {
+  useNewUrlParser: true
+});
 const bcrypt = require('bcryptjs');
+
+// var settings = {
+//   reconnectTries : Number.MAX_VALUE,
+//   autoReconnect : true
+// };
 
 // TODO Сделать генерацию токена
 function getAccessToken () {
@@ -65,7 +81,7 @@ function createUserObj (userRegisterInfo, userId) {
 
 module.exports.createUser = function (userRegisterInfo) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -94,10 +110,11 @@ module.exports.createUser = function (userRegisterInfo) {
 
 module.exports.getUserByUsername = function (username) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(function (err, client) {
       if (err) {
         return reject(err);
       }
+      // Подключаемся к базе данных
       const db = client.db();
 
       let userObj = db.collection('users').findOne({ 'username': username });
@@ -113,7 +130,8 @@ module.exports.getUserByUsername = function (username) {
 
 module.exports.getUserById = function (id) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(function (err, client) {
+      // console.log(2222222);
       if (err) {
         console.log(err);
         return reject(err);
@@ -122,6 +140,7 @@ module.exports.getUserById = function (id) {
       const db = client.db();
 
       let userObj = db.collection('users').findOne({ 'id': id });
+
       client.close();
       if (userObj) {
         resolve(userObj);

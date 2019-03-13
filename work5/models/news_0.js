@@ -1,5 +1,6 @@
 const config = require('../config');
-const mongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
+const mongoClient = new MongoClient(config.dbURL, { useNewUrlParser: true });
 
 function createNewsObj (newsInfo, userObj, newsId) {
   const newsObj = {};
@@ -15,10 +16,11 @@ function createNewsObj (newsInfo, userObj, newsId) {
 
 module.exports.createNews = function (newsInfo, userObj) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(function (err, client) {
       if (err) {
         return reject(err);
       }
+      // Подключаемся к базе данных
       const db = client.db();
       // Увеличиваем счетчик пользователей в коллекции counters
       db.collection('counters').findOneAndUpdate(
@@ -36,24 +38,6 @@ module.exports.createNews = function (newsInfo, userObj) {
           client.close();
           resolve(newNews);
         });
-    });
-  });
-};
-
-module.exports.getAllNews = function () {
-  return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
-      if (err) {
-        return reject(err);
-      }
-      const db = client.db();
-      db.collection('news').find({}).toArray((err, results) => {
-        if (err) {
-          return reject(err);
-        }
-        client.close();
-        resolve(results);
-      });
     });
   });
 };

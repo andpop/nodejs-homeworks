@@ -14,5 +14,12 @@ mongoClient.connect(function (err, client) {
     }
   );
   console.log(ret);
+  ret = db.collection('counters').insertOne(
+    {
+      _id: "newsid",
+      seq: 0
+    }
+  );
+  console.log(ret);
   client.close();
 });
