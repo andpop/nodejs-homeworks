@@ -13,6 +13,7 @@ router.post('/api/login', api.login);
 router.get('/api/getNews', api.getAllNews);
 router.post('/api/newNews', api.saveNewNews);
 router.put('/api/updateNews/:id', api.updateNews);
+router.delete('/api/deleteNews/:id', api.deleteNews);
 
 router.get('/*', (req, res) => {
   res.redirect('/index.html');

@@ -85,3 +85,27 @@ module.exports.updateNews = function (newsInfo, userObj) {
     });
   });
 };
+
+module.exports.deleteNewsById = function (newsId) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      const db = client.db();
+      db.collection('news').deleteOne(
+        { id: +newsId },
+        (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          client.close();
+          if (result.result.n === 0) {
+            resolve(null);
+          } else {
+            resolve({ result: 'The news was deleted.' });
+          }
+        });
+    });
+  });
+};
