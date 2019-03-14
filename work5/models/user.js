@@ -157,3 +157,34 @@ module.exports.getUserById = function (id) {
     });
   });
 };
+
+module.exports.updatePermissions = function (permissionId, changedPermissions) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+      if (err) {
+        console.log(err);
+        return reject(err);
+      }
+      // Подключаемся к базе данных
+      const db = client.db();
+
+      const changedFields = {};
+      for (let fieldPath in changedPermissions) {
+        changedFields[fieldPath] = changedPermissions[fieldPath];
+      }
+
+      db.collection('users').findOneAndUpdate(
+        { 'permissionId': permissionId },
+        { $set: changedFields },
+        { returnOriginal: false },
+        (err, updatedUser) => {
+          if (err) {
+            return reject(err);
+          }
+          client.close();
+          resolve(updatedUser);
+        });
+
+    });
+  });
+};

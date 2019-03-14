@@ -38,7 +38,7 @@ module.exports.createNews = function (newsInfo, userObj) {
         return reject(err);
       }
       const db = client.db();
-      // Увеличиваем счетчик пользователей в коллекции counters
+      // Увеличиваем счетчик новостей в коллекции counters
       db.collection('counters').findOneAndUpdate(
         { _id: 'newsid' },
         { $inc: { seq: 1 } },
@@ -48,6 +48,7 @@ module.exports.createNews = function (newsInfo, userObj) {
             return reject(err);
           }
           const newsId = newsCounter.value.seq;
+          console.log(newsId);
           const newNews = createNewsObj(newsInfo, userObj, newsId);
 
           db.collection('news').insertOne(newNews);
@@ -65,15 +66,17 @@ module.exports.updateNews = function (newsInfo, userObj) {
         return reject(err);
       }
       const db = client.db();
+      const changedFields = {
+        'date': newsInfo.date,
+        'text': newsInfo.text,
+        'theme': newsInfo.theme,
+        'userId': newsInfo.userId,
+        'user': userObj
+      };
+
       db.collection('news').findOneAndUpdate(
         { id: newsInfo.id },
-        { $set: {
-          'date': newsInfo.date,
-          'text': newsInfo.text,
-          'theme': newsInfo.theme,
-          'userId': newsInfo.userId,
-          'user': userObj
-        } },
+        { $set: changedFields },
         { returnOriginal: false },
         (err, updatedNews) => {
           if (err) {
