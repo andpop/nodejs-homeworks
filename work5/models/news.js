@@ -13,6 +13,24 @@ function createNewsObj (newsInfo, userObj, newsId) {
   return newsObj;
 }
 
+module.exports.getAllNews = function () {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      const db = client.db();
+      db.collection('news').find({}).toArray((err, results) => {
+        if (err) {
+          return reject(err);
+        }
+        client.close();
+        resolve(results);
+      });
+    });
+  });
+};
+
 module.exports.createNews = function (newsInfo, userObj) {
   return new Promise((resolve, reject) => {
     mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
@@ -40,20 +58,30 @@ module.exports.createNews = function (newsInfo, userObj) {
   });
 };
 
-module.exports.getAllNews = function () {
+module.exports.updateNews = function (newsInfo, userObj) {
   return new Promise((resolve, reject) => {
     mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
       const db = client.db();
-      db.collection('news').find({}).toArray((err, results) => {
-        if (err) {
-          return reject(err);
-        }
-        client.close();
-        resolve(results);
-      });
+      db.collection('news').findOneAndUpdate(
+        { id: newsInfo.id },
+        { $set: {
+          'date': newsInfo.date,
+          'text': newsInfo.text,
+          'theme': newsInfo.theme,
+          'userId': newsInfo.userId,
+          'user': userObj
+        } },
+        { returnOriginal: false },
+        (err, updatedNews) => {
+          if (err) {
+            return reject(err);
+          }
+          client.close();
+          resolve(updatedNews);
+        });
     });
   });
 };

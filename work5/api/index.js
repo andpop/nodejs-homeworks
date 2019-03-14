@@ -45,7 +45,7 @@ module.exports.saveNewNews = function (req, res) {
     .then(userObj => {
       return news.createNews(newNews, userObj);
     })
-    .then(newsNews => {
+    .then(savedNews => {
       return news.getAllNews();
     })
     .then(newsList => {
@@ -54,4 +54,23 @@ module.exports.saveNewNews = function (req, res) {
     .catch(err => {
       res.status(501).json({ err: err.message });
     });
+};
+
+module.exports.updateNews = function (req, res) {
+  // console.log(req.params.id);
+  const newNews = JSON.parse(req.body);
+  user.getUserById(newNews.userId)
+    .then(userObj => {
+      return news.updateNews(newNews, userObj);
+    })
+    .then(updatedNews => {
+      return news.getAllNews();
+    })
+    .then(newsList => {
+      res.json(newsList);
+    })
+    .catch(err => {
+      res.status(501).json({ err: err.message });
+    });
+
 };
