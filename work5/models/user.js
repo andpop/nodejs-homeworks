@@ -36,12 +36,19 @@ function getPermission (userId) {
     'U': true,
     'D': true
   };
+  // permissions.setting = {
+  //   'id': userId,
+  //   'C': false,
+  //   'R': true,
+  //   'U': true,
+  //   'D': false
+  // };
   permissions.setting = {
     'id': userId,
-    'C': false,
+    'C': true,
     'R': true,
     'U': true,
-    'D': false
+    'D': true
   };
 
   return permissions;
@@ -62,6 +69,25 @@ function createUserObj (userRegisterInfo, userId) {
 
   return userObj;
 }
+
+module.exports.getAllUsers = function () {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      const db = client.db();
+      db.collection('users').find({}).toArray((err, results) => {
+        if (err) {
+          return reject(err);
+        }
+        client.close();
+        resolve(results);
+      });
+    });
+  });
+};
+
 
 module.exports.createUser = function (userRegisterInfo) {
   return new Promise((resolve, reject) => {

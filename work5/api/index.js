@@ -1,6 +1,17 @@
 const user = require('../models/user');
 const news = require('../models/news');
 
+module.exports.getAllUsers = function (req, res) {
+  user.getAllUsers()
+    .then(newsList => {
+      res.json(newsList);
+    })
+    .catch(err => {
+      res.status(501).json({ err: err.message });
+    });
+
+};
+
 module.exports.saveNewUser = function (req, res) {
   // TODO Сделать проверку входных данных
 

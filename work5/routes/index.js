@@ -7,6 +7,7 @@ const api = require('../api/index');
 //   res.send('POST-запрос');
 //   console.log(req.body);
 // });
+router.get('/api/getUsers', api.getAllUsers);
 router.post('/api/saveNewUser', api.saveNewUser);
 router.post('/api/login', api.login);
 
