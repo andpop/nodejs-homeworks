@@ -1,7 +1,10 @@
-// const config = require('../config');
+const isLocalDB = true;
+
 const MongoClient = require('mongodb').MongoClient;
-// const mongoClient = new MongoClient(config.dbURL, { useNewUrlParser: true });
-const mongoClient = new MongoClient('mongodb+srv://andpop-user:sgYHgLhyeoHiFfOX@andpop-lrdsm.mongodb.net/loftsystem?retryWrites=true', { useNewUrlParser: true });
+const config = require('../config');
+const dbUrl = isLocalDB ? config.dbURL : 'mongodb+srv://andpop-user:sgYHgLhyeoHiFfOX@andpop-lrdsm.mongodb.net/loftsystem?retryWrites=true';
+
+const mongoClient = new MongoClient(dbUrl, { useNewUrlParser: true });
 
 mongoClient.connect(function (err, client) {
   if (err) {
@@ -10,14 +13,14 @@ mongoClient.connect(function (err, client) {
   const db = client.db();
   let ret = db.collection('counters').insertOne(
     {
-      _id: "userid",
+      _id: 'userid',
       seq: 0
     }
   );
   console.log(ret);
   ret = db.collection('counters').insertOne(
     {
-      _id: "newsid",
+      _id: 'newsid',
       seq: 0
     }
   );
