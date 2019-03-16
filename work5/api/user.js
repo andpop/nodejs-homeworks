@@ -2,7 +2,7 @@ const user = require('../models/user');
 
 function isCRUD (permission) {
   const cruds = ['C', 'R', 'U', 'D'];
-  return (cruds.indexOf(permission) != -1);
+  return (cruds.indexOf(permission) !== -1);
 }
 
 function getChangedPermissions (permissionInfo) {

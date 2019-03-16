@@ -205,6 +205,10 @@ module.exports.updateInfo = function (userInfo) {
         if (field !== 'oldPassword' && field !== 'password') {
           changedFields[field] = userInfo[field];
         }
+        // TODO Добавить проверку совпадения hashPassword(userInfo.oldPassword) с полем password из записи о пользователе
+        if (field === 'password') {
+          changedFields.password = hashPassword(userInfo.password);
+        }
       }
 
       db.collection('users').findOneAndUpdate(
