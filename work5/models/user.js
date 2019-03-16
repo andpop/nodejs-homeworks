@@ -70,7 +70,7 @@ function createUserObj (userRegisterInfo, userId) {
   return userObj;
 }
 
-module.exports.getAllUsers = function () {
+module.exports.getAll = function () {
   return new Promise((resolve, reject) => {
     mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
       if (err) {
@@ -88,8 +88,7 @@ module.exports.getAllUsers = function () {
   });
 };
 
-
-module.exports.createUser = function (userRegisterInfo) {
+module.exports.create = function (userRegisterInfo) {
   return new Promise((resolve, reject) => {
     mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
       if (err) {
@@ -118,7 +117,7 @@ module.exports.createUser = function (userRegisterInfo) {
   });
 };
 
-module.exports.getUserByUsername = function (username) {
+module.exports.getByUsername = function (username) {
   return new Promise((resolve, reject) => {
     mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
       if (err) {
@@ -137,7 +136,7 @@ module.exports.getUserByUsername = function (username) {
   });
 };
 
-module.exports.getUserById = function (id) {
+module.exports.getById = function (id) {
   return new Promise((resolve, reject) => {
     mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
       if (err) {
@@ -184,7 +183,38 @@ module.exports.updatePermissions = function (permissionId, changedPermissions) {
           client.close();
           resolve(updatedUser);
         });
+    });
+  });
+};
 
+module.exports.updateInfo = function (userInfo) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+      if (err) {
+        console.log(err);
+        return reject(err);
+      }
+      // Подключаемся к базе данных
+      const db = client.db();
+
+      const changedFields = {};
+      for (let field in userInfo) {
+        if (field !== 'oldPassword' && field !== 'password') {
+          changedFields[field] = userInfo[field];
+        }
+      }
+
+      db.collection('users').findOneAndUpdate(
+        { 'id': userInfo.id },
+        { $set: changedFields },
+        { returnOriginal: false },
+        (err, updatedUser) => {
+          if (err) {
+            return reject(err);
+          }
+          client.close();
+          resolve(updatedUser.value);
+        });
     });
   });
 };

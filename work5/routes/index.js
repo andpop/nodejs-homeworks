@@ -12,6 +12,8 @@ router.post('/api/login', apiUser.login);
 router.post('/api/saveNewUser', apiUser.saveNewUser);
 router.get('/api/getUsers', apiUser.getAllUsers);
 router.put('/api/updateUserPermission/:id', apiUser.updateUserPermissions);
+router.put('/api/updateUser/:id', apiUser.updateUserInfo);
+router.post('/api/saveUserImage/:id', apiUser.saveUserImage);
 
 router.get('/api/getNews', apiNews.getAllNews);
 router.post('/api/newNews', apiNews.saveNewNews);

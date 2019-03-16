@@ -20,7 +20,7 @@ function getChangedPermissions (permissionInfo) {
 }
 
 module.exports.getAllUsers = function (req, res) {
-  user.getAllUsers()
+  user.getAll()
     .then(newsList => {
       res.json(newsList);
     })
@@ -34,7 +34,7 @@ module.exports.saveNewUser = function (req, res) {
   // TODO Сделать проверку входных данных
 
   const newUser = JSON.parse(req.body);
-  user.createUser(newUser)
+  user.create(newUser)
     .then(responseUser => {
       res.json(responseUser);
     })
@@ -45,7 +45,7 @@ module.exports.saveNewUser = function (req, res) {
 
 module.exports.login = function (req, res) {
   const account = JSON.parse(req.body);
-  user.getUserByUsername(account.username)
+  user.getByUsername(account.username)
     .then(userObj => {
       if (userObj) {
         res.json(userObj);
@@ -68,4 +68,20 @@ module.exports.updateUserPermissions = function (req, res) {
     .catch(err => {
       res.status(501).json({ err: err.message });
     });
+};
+
+module.exports.updateUserInfo = function (req, res) {
+  const userInfo = JSON.parse(req.body);
+  user.updateInfo(userInfo)
+    .then(updatedUser => {
+      res.json(updatedUser);
+    })
+    .catch(err => {
+      res.status(501).json({ err: err.message });
+    });
+};
+
+module.exports.saveUserImage = function (req, res) {
+  const userId = req.params.id;
+  console.log(userId);
 };

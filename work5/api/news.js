@@ -13,7 +13,7 @@ module.exports.getAllNews = function (req, res) {
 
 module.exports.saveNewNews = function (req, res) {
   const newNews = JSON.parse(req.body);
-  user.getUserById(newNews.userId)
+  user.getById(newNews.userId)
     .then(userObj => {
       return news.createNews(newNews, userObj);
     })
@@ -31,7 +31,7 @@ module.exports.saveNewNews = function (req, res) {
 module.exports.updateNews = function (req, res) {
   // console.log(req.params.id);
   const newNews = JSON.parse(req.body);
-  user.getUserById(newNews.userId)
+  user.getById(newNews.userId)
     .then(userObj => {
       return news.updateNews(newNews, userObj);
     })
