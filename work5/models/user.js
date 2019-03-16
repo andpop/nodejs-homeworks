@@ -1,6 +1,9 @@
 const config = require('../config');
 const mongoClient = require('mongodb').MongoClient;
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
+const formidable = require('formidable');
 
 // TODO Сделать генерацию токена
 function getAccessToken () {
@@ -215,6 +218,35 @@ module.exports.updateInfo = function (userInfo) {
           client.close();
           resolve(updatedUser.value);
         });
+    });
+  });
+};
+
+module.exports.saveImage = function (req) {
+  return new Promise((resolve, reject) => {
+    const form = new formidable.IncomingForm();
+    const userId = req.params.id;
+    const uploadDir = path.join('./public', 'upload', userId);
+
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+    form.uploadDir = path.join(process.cwd(), uploadDir);
+    form.parse(req, function (err, fields, files) {
+      if (err) {
+        console.error(err.message);
+        return reject(err);
+      }
+      // console.log(fields);
+      // console.log(files[req.params.id].name);
+      const fileName = path.join(uploadDir, files[userId].name);
+      fs.rename(files[userId].path, fileName, function (err) {
+        if (err) {
+          console.error(err.message);
+          return reject(err);
+        }
+        resolve({ 'path': path.join('upload', userId, files[userId].name) });
+      });
     });
   });
 };

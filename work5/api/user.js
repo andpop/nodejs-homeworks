@@ -82,6 +82,13 @@ module.exports.updateUserInfo = function (req, res) {
 };
 
 module.exports.saveUserImage = function (req, res) {
-  const userId = req.params.id;
-  console.log(userId);
+  // const userId = req.params.id;
+  // console.log(userId);
+  user.saveImage(req)
+    .then(uploadedFile => {
+      res.json(uploadedFile);
+    })
+    .catch(err => {
+      res.status(501).json({ err: err.message });
+    });
 };
