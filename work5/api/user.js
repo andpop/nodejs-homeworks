@@ -27,7 +27,6 @@ module.exports.getAllUsers = function (req, res) {
     .catch(err => {
       res.status(501).json({ err: err.message });
     });
-
 };
 
 module.exports.saveNewUser = function (req, res) {
@@ -82,8 +81,6 @@ module.exports.updateUserInfo = function (req, res) {
 };
 
 module.exports.saveUserImage = function (req, res) {
-  // const userId = req.params.id;
-  // console.log(userId);
   user.saveImage(req)
     .then(uploadedFile => {
       res.json(uploadedFile);

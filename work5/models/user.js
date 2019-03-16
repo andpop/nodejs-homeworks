@@ -237,8 +237,6 @@ module.exports.saveImage = function (req) {
         console.error(err.message);
         return reject(err);
       }
-      // console.log(fields);
-      // console.log(files[req.params.id].name);
       const fileName = path.join(uploadDir, files[userId].name);
       fs.rename(files[userId].path, fileName, function (err) {
         if (err) {
