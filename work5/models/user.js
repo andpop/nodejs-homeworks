@@ -5,11 +5,6 @@ const path = require('path');
 const formidable = require('formidable');
 const lib = require('../lib');
 
-// TODO Сделать генерацию токена
-function getAccessToken () {
-  return '855c03c0-19f0-4cc2-a444-dc5479f41600';
-}
-
 function getPermission (userId) {
   const permissions = {};
   permissions.id = userId;
@@ -55,7 +50,7 @@ function getPermission (userId) {
 function createUserObj (userRegisterInfo, userId) {
   const userObj = {};
   userObj.id = userId;
-  userObj.access_token = getAccessToken();
+  userObj.access_token = lib.generateAccessToken(userId);
   userObj.password = lib.hashPassword(userRegisterInfo.password);
   userObj.username = userRegisterInfo.username;
   userObj.firstName = userRegisterInfo.firstName;

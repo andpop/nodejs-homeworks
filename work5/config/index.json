@@ -10,5 +10,6 @@
     "saveUninitialized": false,
     "resave": false
   },
-  "dbURL": "mongodb://localhost:27017/loftsystem"
+  "dbURL": "mongodb://localhost:27017/loftsystem",
+  "secret": "asF345"
 }
