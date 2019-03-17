@@ -4,10 +4,6 @@ const router = express.Router();
 const apiUser = require('../api/user');
 const apiNews = require('../api/news');
 
-// router.post('/*', (req, res) => {
-//   res.send('POST-запрос');
-//   console.log(req.body);
-// });
 router.post('/api/login', apiUser.login);
 router.post('/api/saveNewUser', apiUser.saveNewUser);
 router.get('/api/getUsers', apiUser.getAllUsers);

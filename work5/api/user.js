@@ -1,4 +1,5 @@
 const user = require('../models/user');
+const lib = require('../lib');
 
 function isCRUD (permission) {
   const cruds = ['C', 'R', 'U', 'D'];
@@ -47,7 +48,12 @@ module.exports.login = function (req, res) {
   user.getByUsername(account.username)
     .then(userObj => {
       if (userObj) {
-        res.json(userObj);
+        if (lib.validPassword(account.password, userObj.password)) {
+          res.json(userObj);
+        } else {
+          // TODO В каком виде нужно отсылать сообщения об ошибке???
+          res.status(401).json({ err: 'Неправильное имя пользователя или пароль' });
+        }
       } else {
         res.status(401).json({ err: 'Неправильное имя пользователя или пароль' });
       }

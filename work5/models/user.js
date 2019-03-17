@@ -1,18 +1,13 @@
 const config = require('../config');
 const mongoClient = require('mongodb').MongoClient;
-const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 const formidable = require('formidable');
+const lib = require('../lib');
 
 // TODO Сделать генерацию токена
 function getAccessToken () {
   return '855c03c0-19f0-4cc2-a444-dc5479f41600';
-}
-
-function hashPassword (password) {
-  // let hash = '$2a$10$qxJ1/xr5UeA2aeL6JMV8veL5Z8kHbJbvP8/3EHJpcAwOhMDZ5zMHi';
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
 
 function getPermission (userId) {
@@ -61,7 +56,7 @@ function createUserObj (userRegisterInfo, userId) {
   const userObj = {};
   userObj.id = userId;
   userObj.access_token = getAccessToken();
-  userObj.password = hashPassword(userRegisterInfo.password);
+  userObj.password = lib.hashPassword(userRegisterInfo.password);
   userObj.username = userRegisterInfo.username;
   userObj.firstName = userRegisterInfo.firstName;
   userObj.middleName = userRegisterInfo.middleName;
@@ -207,7 +202,7 @@ module.exports.updateInfo = function (userInfo) {
         }
         // TODO Добавить проверку совпадения hashPassword(userInfo.oldPassword) с полем password из записи о пользователе
         if (field === 'password') {
-          changedFields.password = hashPassword(userInfo.password);
+          changedFields.password = lib.hashPassword(userInfo.password);
         }
       }
 

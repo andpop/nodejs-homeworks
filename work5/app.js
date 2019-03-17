@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+// const FileStore = require('session-file-store')(session);
+// const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,8 +15,27 @@ app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const config = require('./config');
-
 app.use(session(config.session));
+
+// Пробовал авторизацию через passport - не получилось
+// app.use(session({
+//   store: new FileStore(),
+//   secret: 'klop',
+//   key: 'sessionkey',
+//   cookie: {
+//     'path': '/',
+//     'httpOnly': true,
+//     'maxAge': 30 * 60 * 1000
+//   },
+//   saveUninitialized: true,
+//   resave: false,
+//   ephemeral: true,
+//   rolling: true
+// }));
+
+// require('./config/config-passport');
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
