@@ -11,7 +11,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const chatUsers = [];
-let countSockets = 0;
 
 io.on('connection', function (socket) {
   if (socket.request.headers.username) {
