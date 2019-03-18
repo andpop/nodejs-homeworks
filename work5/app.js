@@ -11,15 +11,24 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const chatUsers = [];
-const newChatUser = {};
+let countSockets = 0;
 
 io.on('connection', function (socket) {
-  console.log('User connected');
-  newChatUser.id = socket.id;
-  // newChatUser.username = socket.request.headers.username + ' ' + socket.id;
-  newChatUser.username = socket.request.headers.username;
-  chatUsers.push(newChatUser);
-  socket.json.emit('all users', chatUsers);
+  if (socket.request.headers.username) {
+    chatUsers.push(
+      {
+        'id': socket.id,
+        'username': socket.request.headers.username
+      });
+    console.log(chatUsers);
+
+    socket.json.emit('all users', chatUsers);
+    socket.json.broadcast.emit('new user',
+      {
+        'id': socket.id,
+        'username': socket.request.headers.username
+      });
+  }
 
   io.on('disconnect', function () {
     console.log('User disconnect');
@@ -41,9 +50,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
 
-// app.listen(PORT, function () {
-//   console.log(`App listening on port ${PORT}!`);
-// });
 http.listen(PORT, function () {
   console.log(`App listening on port ${PORT}!`);
 });
