@@ -36,6 +36,10 @@ io.on('connection', function (socket) {
   });
 });
 
+io.on('chat message', function () {
+  console.log('Chat message1');
+});
+
 // Запросы от фронта приходят с Content-type: plain/text
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: false }));
