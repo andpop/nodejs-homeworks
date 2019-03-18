@@ -31715,19 +31715,13 @@ var ChatComponent = (function (_super) {
             self.history[id] = data;
         });
         this.socket.on('all users', function (data) {
-            console.log('all users event');
             self.users = data;
         });
         this.socket.on('new user', function (data) {
-            // console.log('new user event');
-            // console.log('data = ', data);
             var object = self.users;
-            // console.log('object1 = ', object);
             object[data.id] = data;
-            // console.log('object2 = ', object);
             self.users = [];
             self.users = object;
-            // console.log('self.users =', self.users);
         });
         this.socket.on('delete user', function (data) {
             var object = self.users;

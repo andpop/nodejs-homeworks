@@ -10,15 +10,14 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const chatUsers = [];
+const chatUsers = {};
 
 io.on('connection', function (socket) {
   if (socket.request.headers.username) {
-    chatUsers.push(
-      {
-        'id': socket.id,
-        'username': socket.request.headers.username
-      });
+    chatUsers[socket.id] = {
+      'id': socket.id,
+      'username': socket.request.headers.username
+    };
     console.log(chatUsers);
 
     socket.json.emit('all users', chatUsers);
