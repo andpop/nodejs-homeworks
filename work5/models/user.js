@@ -8,13 +8,21 @@ const lib = require('../lib');
 function getPermission (userId) {
   const permissions = {};
   permissions.id = userId;
+  // permissions.chat = {
+  //   'id': userId,
+  //   'C': false,
+  //   'R': true,
+  //   'U': true,
+  //   'D': false
+  // };
   permissions.chat = {
     'id': userId,
-    'C': false,
+    'C': true,
     'R': true,
     'U': true,
-    'D': false
+    'D': true
   };
+
   // permissions.news = {
   //   'id': userId,
   //   'C': false,

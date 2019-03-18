@@ -10,10 +10,22 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+const chatUsers = [];
+const newChatUser = {};
+
 io.on('connection', function (socket) {
   console.log('User connected');
+  newChatUser.id = socket.id;
+  // newChatUser.username = socket.request.headers.username + ' ' + socket.id;
+  newChatUser.username = socket.request.headers.username;
+  chatUsers.push(newChatUser);
+  socket.json.emit('all users', chatUsers);
+
   io.on('disconnect', function () {
     console.log('User disconnect');
+  });
+  io.on('chat message', function () {
+    console.log('Chat message');
   });
 });
 
