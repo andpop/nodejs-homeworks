@@ -28,16 +28,21 @@ io.on('connection', function (socket) {
       });
   }
 
-  io.on('disconnect', function () {
+  socket.on('disconnect', function () {
     console.log('User disconnect');
+    delete chatUsers[socket.id];
+    socket.broadcast.emit('delete user', socket.id);
   });
-  io.on('chat message', function () {
-    console.log('Chat message');
-  });
-});
 
-io.on('chat message', function () {
-  console.log('Chat message1');
+  socket.on('chat message', (data, userId) => {
+    console.log(data, userId);
+    // io.to(`${userId}`).emit('chat message', data, socket.id);
+    if (userId !== socket.id) {
+      console.log(io.sockets.connected[userId]);
+      io.sockets.connected[userId].emit('chat message', data, socket.id);
+    }
+  });
+
 });
 
 // Запросы от фронта приходят с Content-type: plain/text
