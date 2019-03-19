@@ -5,7 +5,7 @@ const path = require('path');
 const formidable = require('formidable');
 const lib = require('../lib');
 
-function getPermission (userId) {
+function setDefaultPermission (userId) {
   const permissions = {};
   permissions.id = userId;
   // permissions.chat = {
@@ -66,7 +66,7 @@ function createUserObj (userRegisterInfo, userId) {
   userObj.surName = userRegisterInfo.surName;
   userObj.img = userRegisterInfo.img;
   userObj.permissionId = userObj.id;
-  userObj.permission = getPermission(userObj.id);
+  userObj.permission = setDefaultPermission(userObj.id);
 
   return userObj;
 }
@@ -247,6 +247,30 @@ module.exports.saveImage = function (req) {
         }
         resolve({ 'path': path.join('upload', userId, files[userId].name) });
       });
+    });
+  });
+};
+
+module.exports.deleteById = function (userId) {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+      if (err) {
+        return reject(err);
+      }
+      const db = client.db();
+      db.collection('users').deleteOne(
+        { id: +userId },
+        (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          client.close();
+          if (result.result.n === 0) {
+            resolve(null);
+          } else {
+            resolve({ result: 'The user was deleted.' });
+          }
+        });
     });
   });
 };

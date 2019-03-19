@@ -9,41 +9,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const chat = require('./chat');
 
-const chatUsers = {};
+module.exports.chatUsers = {};
 
-io.on('connection', function (socket) {
-  if (socket.request.headers.username) {
-    chatUsers[socket.id] = {
-      'id': socket.id,
-      'username': socket.request.headers.username
-    };
-    console.log(chatUsers);
-
-    socket.json.emit('all users', chatUsers);
-    socket.json.broadcast.emit('new user',
-      {
-        'id': socket.id,
-        'username': socket.request.headers.username
-      });
-  }
-
-  socket.on('disconnect', function () {
-    console.log('User disconnect');
-    delete chatUsers[socket.id];
-    socket.broadcast.emit('delete user', socket.id);
-  });
-
-  socket.on('chat message', (data, userId) => {
-    console.log(data, userId);
-    // io.to(`${userId}`).emit('chat message', data, socket.id);
-    if (userId !== socket.id) {
-      console.log(io.sockets.connected[userId]);
-      io.sockets.connected[userId].emit('chat message', data, socket.id);
-    }
-  });
-
-});
+io.on('connection', chat.chatHandler);
 
 // Запросы от фронта приходят с Content-type: plain/text
 app.use(bodyParser.text());

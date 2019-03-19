@@ -21,6 +21,7 @@ router.get('/api/getUsers', isLoginedUser, apiUser.getAllUsers);
 router.put('/api/updateUserPermission/:id', isLoginedUser, apiUser.updateUserPermissions);
 router.put('/api/updateUser/:id', isLoginedUser, apiUser.updateUserInfo);
 router.post('/api/saveUserImage/:id', isLoginedUser, apiUser.saveUserImage);
+router.delete('/api/deleteUser/:id', isLoginedUser, apiUser.deleteUser);
 
 router.get('/api/getNews', isLoginedUser, apiNews.getAllNews);
 router.post('/api/newNews', isLoginedUser, apiNews.saveNewNews);

@@ -98,3 +98,18 @@ module.exports.saveUserImage = function (req, res) {
       res.status(501).json({ err: err.message });
     });
 };
+
+module.exports.deleteUser = function (req, res) {
+  user.deleteById(req.params.id)
+    .then(result => {
+      return user.getAll();
+    })
+    .then(userList => {
+      res.json(userList);
+    })
+    .catch(err => {
+      res.status(501).json({ err: err.message });
+    });
+
+  // res.redirect('/api/getUsers');
+};
