@@ -10,6 +10,6 @@
     "saveUninitialized": false,
     "resave": false
   },
-  "dbURL": "mongodb+srv://andpop-user:sgYHgLhyeoHiFfOX@andpop-lrdsm.mongodb.net/loftsystem?retryWrites=true",
+  "dbURL": "mongodb://localhost:27017/loftsystem",
   "secret": "asF345"
 }
