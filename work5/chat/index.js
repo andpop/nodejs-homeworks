@@ -6,7 +6,6 @@ module.exports.chatHandler = function (socket) {
       'id': socket.id,
       'username': socket.request.headers.username
     };
-    console.log(app.chatUsers);
 
     socket.json.emit('all users', app.chatUsers);
     socket.json.broadcast.emit('new user',

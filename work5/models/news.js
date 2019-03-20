@@ -1,5 +1,7 @@
-const config = require('../config');
+// const config = require('../config');
+require('dotenv').config();
 const mongoClient = require('mongodb').MongoClient;
+const dbUri = process.env.DB_URI || 'mongodb://localhost:27017/loftsystem';
 
 function createNewsObj (newsInfo, userObj, newsId) {
   const newsObj = {};
@@ -15,7 +17,7 @@ function createNewsObj (newsInfo, userObj, newsId) {
 
 module.exports.getAllNews = function () {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -33,7 +35,7 @@ module.exports.getAllNews = function () {
 
 module.exports.createNews = function (newsInfo, userObj) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -48,7 +50,6 @@ module.exports.createNews = function (newsInfo, userObj) {
             return reject(err);
           }
           const newsId = newsCounter.value.seq;
-          console.log(newsId);
           const newNews = createNewsObj(newsInfo, userObj, newsId);
 
           db.collection('news').insertOne(newNews);
@@ -61,7 +62,7 @@ module.exports.createNews = function (newsInfo, userObj) {
 
 module.exports.updateNews = function (newsInfo, userObj) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -91,7 +92,7 @@ module.exports.updateNews = function (newsInfo, userObj) {
 
 module.exports.deleteNewsById = function (newsId) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }

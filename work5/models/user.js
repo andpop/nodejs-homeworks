@@ -1,20 +1,29 @@
-const config = require('../config');
+// const config = require('../config');
 const mongoClient = require('mongodb').MongoClient;
 const fs = require('fs');
 const path = require('path');
 const formidable = require('formidable');
 const lib = require('../lib');
 
-function setDefaultPermission (userId) {
+require('dotenv').config();
+const dbUri = process.env.DB_URI || 'mongodb://localhost:27017/loftsystem';
+
+function setPermissions (userRegisterInfo, userId) {
   const permissions = {};
   permissions.id = userId;
-  // permissions.chat = {
-  //   'id': userId,
-  //   'C': false,
-  //   'R': true,
-  //   'U': true,
-  //   'D': false
-  // };
+  for (let category in userRegisterInfo.permission) {
+    permissions[category] = {};
+    permissions[category]['id'] = userId;
+    for (let permission in userRegisterInfo.permission[category]) {
+      permissions[category][permission] = userRegisterInfo['permission'][category][permission];
+    }
+  }
+  return permissions;
+}
+
+function setAdminPermissions (userRegisterInfo, userId) {
+  const permissions = {};
+  permissions.id = userId;
   permissions.chat = {
     'id': userId,
     'C': true,
@@ -22,14 +31,6 @@ function setDefaultPermission (userId) {
     'U': true,
     'D': true
   };
-
-  // permissions.news = {
-  //   'id': userId,
-  //   'C': false,
-  //   'R': true,
-  //   'U': true,
-  //   'D': false
-  // };
   permissions.news = {
     'id': userId,
     'C': true,
@@ -37,13 +38,6 @@ function setDefaultPermission (userId) {
     'U': true,
     'D': true
   };
-  // permissions.setting = {
-  //   'id': userId,
-  //   'C': false,
-  //   'R': true,
-  //   'U': true,
-  //   'D': false
-  // };
   permissions.setting = {
     'id': userId,
     'C': true,
@@ -51,7 +45,6 @@ function setDefaultPermission (userId) {
     'U': true,
     'D': true
   };
-
   return permissions;
 }
 
@@ -66,14 +59,14 @@ function createUserObj (userRegisterInfo, userId) {
   userObj.surName = userRegisterInfo.surName;
   userObj.img = userRegisterInfo.img;
   userObj.permissionId = userObj.id;
-  userObj.permission = setDefaultPermission(userObj.id);
+  userObj.permission = setPermissions(userRegisterInfo, userId);
 
   return userObj;
 }
 
 module.exports.getAll = function () {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -91,7 +84,7 @@ module.exports.getAll = function () {
 
 module.exports.create = function (userRegisterInfo) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -120,7 +113,7 @@ module.exports.create = function (userRegisterInfo) {
 
 module.exports.getByUsername = function (username) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }
@@ -139,9 +132,9 @@ module.exports.getByUsername = function (username) {
 
 module.exports.getById = function (id) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
-        console.log(err);
+        console.error(err);
         return reject(err);
       }
       // Подключаемся к базе данных
@@ -160,9 +153,9 @@ module.exports.getById = function (id) {
 
 module.exports.updatePermissions = function (permissionId, changedPermissions) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
-        console.log(err);
+        console.error(err);
         return reject(err);
       }
       // Подключаемся к базе данных
@@ -190,9 +183,9 @@ module.exports.updatePermissions = function (permissionId, changedPermissions) {
 
 module.exports.updateInfo = function (userInfo) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
-        console.log(err);
+        console.error(err);
         return reject(err);
       }
       // Подключаемся к базе данных
@@ -253,7 +246,7 @@ module.exports.saveImage = function (req) {
 
 module.exports.deleteById = function (userId) {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(config.dbURL, { useNewUrlParser: true }, function (err, client) {
+    mongoClient.connect(dbUri, { useNewUrlParser: true }, function (err, client) {
       if (err) {
         return reject(err);
       }

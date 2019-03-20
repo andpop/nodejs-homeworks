@@ -5,8 +5,8 @@ const apiUser = require('../api/user');
 const apiNews = require('../api/news');
 
 const isLoginedUser = (req, res, next) => {
-  console.log(req.session);
-  console.log(req.session.cookie);
+  // console.log(req.session);
+  // console.log(req.session.cookie);
   // если в сессии текущего пользователя есть пометка о том, что он залогинился
   if (req.session.isLoginedUser) {
     // то всё хорошо :)

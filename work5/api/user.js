@@ -31,9 +31,8 @@ module.exports.getAllUsers = function (req, res) {
 };
 
 module.exports.saveNewUser = function (req, res) {
-  // TODO Сделать проверку входных данных через joi
-
   const newUser = JSON.parse(req.body);
+
   user.create(newUser)
     .then(responseUser => {
       req.session.isLoginedUser = true;
@@ -51,9 +50,9 @@ module.exports.login = function (req, res) {
       if (userObj) {
         if (lib.validPassword(account.password, userObj.password)) {
           req.session.isLoginedUser = true;
-          req.session.cookie.isLoginedUser = true;
-          console.log(req.session);
-          console.log(req.session.cookie);
+          // req.session.cookie.isLoginedUser = true;
+          // console.log(req.session);
+          // console.log(req.session.cookie);
           res.json(userObj);
         } else {
           // TODO В каком виде нужно отсылать сообщения об ошибке???
