@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 // const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +22,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // app.use(cookieParser());
 const config = require('./config');
-app.use(session(config.session));
+// app.use(session(config.session));
+app.use(session({
+  'store': new FileStore(),
+  'secret': 'klop',
+  'key': 'sessionkey',
+  'cookie': {
+    'path': '/',
+    'httpOnly': true,
+    'maxAge': 1800000
+  },
+  'saveUninitialized': false,
+  'resave': true
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 

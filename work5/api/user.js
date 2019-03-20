@@ -51,7 +51,9 @@ module.exports.login = function (req, res) {
       if (userObj) {
         if (lib.validPassword(account.password, userObj.password)) {
           req.session.isLoginedUser = true;
-          // console.log(req.session);
+          req.session.cookie.isLoginedUser = true;
+          console.log(req.session);
+          console.log(req.session.cookie);
           res.json(userObj);
         } else {
           // TODO В каком виде нужно отсылать сообщения об ошибке???
