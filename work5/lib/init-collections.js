@@ -2,7 +2,7 @@ const isLocalDB = true;
 
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
-const dbUrl = isLocalDB ? config.dbURL : 'mongodb+srv://andpop-user:sgYHgLhyeoHiFfOX@andpop-lrdsm.mongodb.net/loftsystem?retryWrites=true';
+const dbUrl = isLocalDB ? config.dbURL : 'mongodb+srv://andpop-user:klop@andpop-lrdsm.mongodb.net/loftsystem?retryWrites=true';
 
 const mongoClient = new MongoClient(dbUrl, { useNewUrlParser: true });
 
