@@ -21,6 +21,7 @@ function setPermissions (userRegisterInfo, userId) {
   return permissions;
 }
 
+// Права для администратора на все операции
 function setAdminPermissions (userRegisterInfo, userId) {
   const permissions = {};
   permissions.id = userId;
